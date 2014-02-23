@@ -1,0 +1,19 @@
+﻿@using System.Globalization
+@using MainBit.Localization.Models
+@{
+    var items = Model.ViewModel as List<MainBit.Localization.ViewModels.CulturePickerViewModel>;
+}
+<ul class="cultures">
+@foreach (var item in items)
+{
+    <li>
+        @if (string.IsNullOrEmpty(item.Url))
+        {
+            <span class="flag @item.CultureInfo.TwoLetterISOLanguageName">@item.DisplayName</span>
+        }
+        else {
+            <a href="@item.Url" class="flag @item.CultureInfo.TwoLetterISOLanguageName" rel="nofollow">@item.DisplayName</a>
+        } 
+    </li>
+}
+</ul>

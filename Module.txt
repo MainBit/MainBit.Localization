@@ -1,0 +1,14 @@
+﻿Name: MainBit.Localization
+AntiForgery: enabled
+Author: neTp9c
+Website: http://mainbit.com
+Version: 1.0
+OrchardVersion: 1.7.2
+Description: Description for the module
+Dependencies: MainBit.Common
+Features:
+    MainBit.Localization:
+        Description: Description for feature MainBit.Localization.
+		Category: Social
+	MainBit.Localization.MainSite:
+		Description: Need only for main site.

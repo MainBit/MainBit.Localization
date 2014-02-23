@@ -1,0 +1,21 @@
+﻿@model MainBit.Localization.Models.DomainLocalizationItemRecord
+@using MainBit.Localization.Models
+@using Orchard.ContentManagement
+@{
+    var settings = WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();           
+           
+}
+
+<fieldset>
+    <legend>@T("Domain Localization")</legend>
+    <div class="editor-field">
+        @Html.LabelFor(m => m.DomainLocalizationSettingsItemRecord_Id, T("Main Domain"))
+        @Html.DropDownListFor(x => x.DomainLocalizationSettingsItemRecord_Id, settings.Items.Select(p => new SelectListItem() { Value = p.Id.ToString(), Text = p.Culture}))
+        <span class="hint"></span>
+    </div>
+    <div class="editor-field">
+        @Html.LabelFor(m => m.LocalizedContentItemId, T("Localized Content Item Id"))
+        @Html.EditorFor(m => m.LocalizedContentItemId)
+        <span class="hint"></span>
+    </div>
+</fieldset>

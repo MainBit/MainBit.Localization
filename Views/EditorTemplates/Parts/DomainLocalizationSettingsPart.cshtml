@@ -1,0 +1,10 @@
+﻿@model MainBit.Localization.Models.DomainLocalizationSettingsPart
+
+<fieldset>
+    <legend>@T("Domain")</legend>
+    <div class="editor-field">
+        @Html.LabelFor(m => m.Domain, T("Main Domain"))
+        @Html.EditorFor(m => m.Domain)
+        <span class="hint">@T("The main domain. like - http://mainbit.ru")</span>
+    </div>
+</fieldset>

@@ -1,0 +1,23 @@
+﻿@model IList<MainBit.Localization.Models.DomainLocalizationSettingsItemRecord>
+<table>
+    <thead>
+        <tr>
+            <td>Culture</td>
+            <td>DisplayName</td>
+            <td>Domain</td>
+            <td>Position</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var item in Model) {
+        <tr>
+            <td>@item.Culture</td>
+            <td>@item.DisplayName</td>
+            <td>@item.Domain</td>
+            <td>@item.Position</td>
+            <td>@Html.ActionLink("Edit", "Edit", "CultureAdmin", new { id = item.Id }, new { })</td>
+        </tr>
+    }
+    </tbody>
+</table>
