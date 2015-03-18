@@ -13,31 +13,41 @@ namespace MainBit.Localization
             ContentDefinitionManager.AlterTypeDefinition("CulturePickerWidget", cfg => cfg
                .WithPart("CulturePickerPart")
                .WithPart("WidgetPart")
-               .WithPart("CommonPart")
+               .WithPart("CommonPart", p => p.WithSetting("OwnerEditorSettings.ShowOwnerEditor", "false"))
                .WithSetting("Stereotype", "Widget"));
+
+            //SchemaBuilder.CreateTable("AppDomainSiteRecord",
+            //   table => table
+            //       .Column<int>("Id", column => column.PrimaryKey().Identity())
+            //       .Column<string>("Title")
+            //);
+
+            SchemaBuilder.CreateTable("DomainCultureRecord",
+               table => table
+                   .Column<int>("Id", column => column.PrimaryKey().Identity())
+                   .Column<string>("Culture")
+                   .Column<string>("BaseUrl")
+                   .Column<string>("UrlPrefix")
+                   .Column<int>("Position")
+                   .Column<string>("DisplayName")
+                   .Column<bool>("IsMain")
+                   .Column<int>("AppDomainSiteRecord_Id")
+            );
 
             return 1;
         }
 
         public int UpdateFrom1()
         {
-            SchemaBuilder.CreateTable("DomainLocalizationSettingsPartRecord",
-                table => table
-                    .ContentPartRecord()
-                    .Column<string>("Domain")
-               );
-
-            SchemaBuilder.CreateTable("DomainLocalizationSettingsItemRecord",
-                table => table
-                    .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<int>("DomainLocalizationSettingsPartRecord_Id")
-                    .Column<string>("Culture")
-                    .Column<string>("DisplayName")
-                    .Column<int>("Position")
-                    .Column<string>("Domain")
-                );
+            
 
             return 2;
+        }
+
+        public int UpdateFrom2()
+        {
+
+            return 3;
         }
     }
 }

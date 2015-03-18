@@ -14,7 +14,7 @@ namespace MainBit.Localization.Models
     {
         public virtual int Id { get; set; }
         public virtual int DomainLocalizationPartRecord_Id { get; set; }
-        public virtual int DomainLocalizationSettingsItemRecord_Id { get; set; }
+        public virtual int CultureRecord_Id { get; set; }
         public virtual int LocalizedContentItemId { get; set; }
     }
 }

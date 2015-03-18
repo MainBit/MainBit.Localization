@@ -1,11 +1,28 @@
-﻿@model MainBit.Localization.Models.DomainLocalizationSettingsItemRecord
+﻿@model MainBit.Localization.ViewModels.DomainCultureViewModel
 @using (Html.BeginFormAntiForgeryPost()) {
     @Html.ValidationSummary()
     <fieldset>
         <ul>
-            <li>
+            <li class="addculture">
                 @Html.LabelFor(m => m.Culture)
-                @Html.EditorFor(m => m.Culture)
+                @Html.DropDownListFor(m => m.SystemCulture, new SelectList(Model.AvailableSystemCultures.OrderBy(s => s)))
+                @T("Other"): @Html.EditorFor(m => m.Culture)
+                <span class="hint">@T("")</span>
+            </li>
+            <li>
+                @Html.LabelFor(m => m.BaseUrl)
+                @Html.EditorFor(m => m.BaseUrl)
+                <span class="hint">@T("Enter the fully qualified url of the web site.")</span>
+                <span class="hint">@T("http://www.yourdomain.com")</span>
+            </li>
+            <li>
+                @Html.LabelFor(m => m.UrlPrefix)
+                @Html.EditorFor(m => m.UrlPrefix)
+                <span class="hint">@T("Prefix that uses for aliases.")</span>
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Position)
+                @Html.EditorFor(m => m.Position)
                 <span class="hint">@T("")</span>
             </li>
             <li>
@@ -14,13 +31,13 @@
                 <span class="hint">@T("")</span>
             </li>
             <li>
-                @Html.LabelFor(m => m.Domain)
-                @Html.EditorFor(m => m.Domain)
+                @Html.LabelFor(m => m.IsMain)
+                @Html.EditorFor(m => m.IsMain)
                 <span class="hint">@T("")</span>
             </li>
             <li>
-                @Html.LabelFor(m => m.Position)
-                @Html.EditorFor(m => m.Position)
+                @Html.LabelFor(m => m.AppDomainSiteRecord_Id)
+                @Html.EditorFor(m => m.AppDomainSiteRecord_Id)
                 <span class="hint">@T("")</span>
             </li>
         </ul>

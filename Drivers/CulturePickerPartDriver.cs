@@ -9,47 +9,94 @@ using Orchard.ContentManagement;
 using MainBit.Localization.ViewModels;
 using System.Linq;
 using MainBit.Common.Services;
+using Orchard.Localization.Models;
 
 namespace MainBit.Localization.Drivers
 {
     [UsedImplicitly]
     public class CulturePickerPartDriver : ContentPartDriver<CulturePickerPart> {
-        private readonly ICultureManager _cultureManager;
-        private readonly IWorkContextAccessor _workContextAccessor;
-        private readonly IDomainLocalizationService _localizationService;
-        public readonly ICurrentContentAccessor _currentContentAccessor;
+        private readonly IOrchardServices _orchardServices;
+        private readonly IDomainLocalizationService _domainLocalizationService;
+        private readonly ICurrentContentAccessor _currentContentAccessor;
+        private readonly ILocalizationService _localizationService;
 
         public CulturePickerPartDriver(
-            ICultureManager cultureManager,
-            IWorkContextAccessor workContextAccessor,
-            IDomainLocalizationService localizationService,
-            ICurrentContentAccessor currentContentAccessor)
+            IOrchardServices orchardServices,
+            IDomainLocalizationService domainLocalizationService,
+            ICurrentContentAccessor currentContentAccessor,
+            ILocalizationService localizationService)
         {
-            _cultureManager = cultureManager;
-            _workContextAccessor = workContextAccessor;
-            _localizationService = localizationService;
+            _orchardServices = orchardServices;
+            _domainLocalizationService = domainLocalizationService;
             _currentContentAccessor = currentContentAccessor;
+            _localizationService = localizationService;
         }
 
         protected override DriverResult Display(CulturePickerPart part, string displayType, dynamic shapeHelper) {
 
+            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var currentContent = _currentContentAccessor.CurrentContentItem;
+            var localized = currentContent.As<LocalizationPart>();
+            var localizations = new List<LocalizationPart>();
             
-            var settings = _workContextAccessor.GetContext().CurrentSite.As<DomainLocalizationSettingsPart>();
-            var items = new List<CulturePickerViewModel>();
-
-            foreach(var item in settings.Items.OrderByDescending(p => p.Position)) {
-                items.Add(new CulturePickerViewModel()
+            if (localized != null)
+            {
+                localizations.AddRange(_localizationService.GetLocalizations(currentContent, VersionOptions.Published));
+                if (!localizations.Any(l => l.Id == localized.Id))
                 {
-                    Url = _localizationService.GetUrl(_currentContentAccessor.CurrentContentItem.Id, item.Culture),
-                    DisplayName = item.DisplayName,
-                    CultureInfo = new System.Globalization.CultureInfo(item.Culture)
-                });
+                    if (localized.Culture != null)
+                    {
+                        localizations.Add(localized);
+                    }
+                }
             }
+
+            var viewModel = new CulturePickerViewModel();
+            var currentCulture = _orchardServices.WorkContext.CurrentCulture;
+
+            foreach (var culture in settings.Cultures)
+            {
+                var cultureEntry = new CultureEntry
+                {
+                    DisplayName = culture.DisplayName,
+                    CultureInfo = new System.Globalization.CultureInfo(culture.Culture)
+                };
+                var localization = localizations.FirstOrDefault(l => l.Culture.Culture == culture.Culture);
+
+                if (localization != null)
+                {
+                    cultureEntry.Url = _domainLocalizationService.ItemDisplayUrl(localization);
+                }
+                else
+                {
+                    //cultureEntry.Url = _domainLocalizationService.GetUrl(currentContent.Id, culture.Culture);
+                    cultureEntry.Url = culture.BaseUrl;
+                }
+
+                viewModel.Cultures.Add(cultureEntry);
+
+                if (viewModel.CurrentCulture == null
+                    && string.Equals(culture.Culture, currentCulture, System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    viewModel.CurrentCulture = cultureEntry;
+                }
+            }
+
+
+
+            //foreach(var item in settings.Cultures.OrderByDescending(p => p.Position)) {
+            //    items.Add(new CulturePickerViewModel()
+            //    {
+            //        Url = _domainLocalizationService.GetUrl(_currentContentAccessor.CurrentContentItem.Id, item.Culture),
+            //        DisplayName = item.DisplayName,
+            //        CultureInfo = new System.Globalization.CultureInfo(item.Culture)
+            //    });
+            //}
             
-            var currentCulture = _workContextAccessor.GetContext().CurrentCulture;
+            //var currentCulture = _workContextAccessor.GetContext().CurrentCulture;
 
             return ContentShape("Parts_CulturePicker", () => shapeHelper.Parts_CulturePicker(
-                ViewModel: items));
+                ViewModel: viewModel));
         }
     }
 }

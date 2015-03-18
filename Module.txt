@@ -2,13 +2,19 @@
 AntiForgery: enabled
 Author: neTp9c
 Website: http://mainbit.com
-Version: 1.0
-OrchardVersion: 1.7.2
+Version: 1.9
+OrchardVersion: 1.9
 Description: Description for the module
-Dependencies: MainBit.Common
 Features:
     MainBit.Localization:
-        Description: Description for feature MainBit.Localization.
-		Category: Social
+        Category: Localization
+		Description: Description for feature MainBit.Localization
+		Dependencies: MainBit.Common, Orchard.Localization
 	MainBit.Localization.MainSite:
-		Description: Need only for main site.
+		Category: Localization
+		Description: Must be enabled only for main site. Allow editing domain culture settings.
+		Dependencies: MainBit.Localization
+	MainBit.Localization.DependentSite:
+		Category: Localization
+		Description: Must be enabled only for dependent (non-main) site. Allow getting domain culture settings from main site.
+		Dependencies: MainBit.Localization

@@ -1,23 +1,27 @@
-﻿@model IList<MainBit.Localization.Models.DomainLocalizationSettingsItemRecord>
-<table>
-    <thead>
-        <tr>
-            <td>Culture</td>
-            <td>DisplayName</td>
-            <td>Domain</td>
-            <td>Position</td>
-            <td>Action</td>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach(var item in Model) {
-        <tr>
-            <td>@item.Culture</td>
-            <td>@item.DisplayName</td>
-            <td>@item.Domain</td>
-            <td>@item.Position</td>
-            <td>@Html.ActionLink("Edit", "Edit", "CultureAdmin", new { id = item.Id }, new { })</td>
-        </tr>
-    }
-    </tbody>
-</table>
+﻿@model IList<MainBit.Localization.Models.DomainCultureRecord>
+    <table class="items">
+        <thead>
+            <tr>
+                <td>@T("Culture")</td>
+                <td>@T("Display name")</td>
+                <td>@T("Domain")</td>
+                <td>@T("Position")</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Culture</td>
+                    <td>@item.DisplayName</td>
+                    <td>@item.BaseUrl</td>
+                    <td>@item.Position</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", "CultureAdmin", new { id = item.Id, area = "MainBit.Localization" }, new { })
+                        @T(" | ")
+                        @Html.ActionLink("Remove", "Remove", "CultureAdmin", new { id = item.Id, area = "MainBit.Localization" }, new { itemprop = "RemoveUrl UnsafeUrl" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

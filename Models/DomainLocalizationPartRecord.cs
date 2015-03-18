@@ -11,8 +11,8 @@ namespace MainBit.Localization.Models
         public DomainLocalizationPartRecord()
         {
             Items = new List<DomainLocalizationItemRecord>();
-
         }
+
         [CascadeAllDeleteOrphan]
         public virtual IList<DomainLocalizationItemRecord> Items { get; set; }
     }

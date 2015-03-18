@@ -7,7 +7,6 @@ namespace MainBit.Localization.Models
     [OrchardFeature("MainBit.Localization.MainSite")]
     public class DomainLocalizationPart : ContentPart<DomainLocalizationPartRecord>
     {
-        
         public IList<DomainLocalizationItemRecord> Items {
             get { return Record.Items; }
             set { Record.Items = value; } 

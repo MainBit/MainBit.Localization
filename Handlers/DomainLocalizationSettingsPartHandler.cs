@@ -1,4 +1,5 @@
 ﻿using MainBit.Localization.Models;
+using MainBit.Localization.Services;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
@@ -8,14 +9,13 @@ namespace MainBit.Localization.Handlers
 {
     public class DomainLocalizationSettingsPartHandler : ContentHandler {
 
-        public DomainLocalizationSettingsPartHandler(IRepository<DomainLocalizationSettingsPartRecord> repository)
+        public DomainLocalizationSettingsPartHandler(
+            IDomainCultureService domainCultureService)
         {
-            Filters.Add(StorageFilter.For(repository));
             Filters.Add(new ActivatingFilter<DomainLocalizationSettingsPart>("Site"));
 
-            T = NullLocalizer.Instance;
-            OnGetContentItemMetadata<DomainLocalizationSettingsPart>((context, part) => 
-                context.Metadata.EditorGroupInfo.Add(new GroupInfo(T("DomainLocalization"))));
+            OnLoading<DomainLocalizationSettingsPart>((context, part) => 
+                part.CulturesField.Loader(() => domainCultureService.GetCultures()));
         }
 
         public Localizer T { get; set; }
