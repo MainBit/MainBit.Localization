@@ -3,7 +3,7 @@
 @{
     var viewModel = Model.ViewModel as MainBit.Localization.ViewModels.CulturePickerViewModel;
 }
-<div class="dropdown language-switcher header__item">
+<div class="dropdown language-switcher">
     <a href="#" id="language-switcher__link" class="text-gray-light target-modal border-inside dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
         <span class="img-icon-flag img-icon-flag_@(viewModel.CurrentCulture.CultureInfo.TwoLetterISOLanguageName.ToLower())"></span><span class="border">@viewModel.CurrentCulture.DisplayName</span>
     </a>
@@ -11,7 +11,7 @@
         @foreach (var culture in viewModel.Cultures)
         {
             <li @(culture == viewModel.CurrentCulture ? Html.Raw("class=\"active\"") : null)>
-                <a href="@culture.Url" class="border-inside text-gray-light">
+                <a href="@culture.Url" class="text-gray-light border-inside">
                     <span class="img-icon-flag img-icon-flag_@(culture.CultureInfo.TwoLetterISOLanguageName.ToLower())"></span><span class="border">@culture.DisplayName</span>
                 </a>
             </li>

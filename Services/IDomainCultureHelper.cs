@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MainBit.Localization.Models;
+using System.Text.RegularExpressions;
 
 namespace MainBit.Localization.Services
 {
@@ -18,6 +19,7 @@ namespace MainBit.Localization.Services
         DomainCultureRecord GetCultureByName(DomainLocalizationSettingsPart settings, string cultureName);
         DomainCultureRecord GetCultureByBaseUrl(string cultureName);
         DomainCultureRecord GetCultureByBaseUrl(DomainLocalizationSettingsPart settings, string cultureName);
+        bool IsAllowedBaseUrl(DomainCultureRecord culture, string baseUrl);
     }
 
     public class DomainCultureHelper : IDomainCultureHelper
@@ -67,7 +69,38 @@ namespace MainBit.Localization.Services
         }
         public DomainCultureRecord GetCultureByBaseUrl(DomainLocalizationSettingsPart settings, string baseUrl)
         {
-            return settings.Cultures.FirstOrDefault(c => string.Equals(baseUrl, c.BaseUrl, StringComparison.InvariantCultureIgnoreCase));
+            DomainCultureRecord currentCulture = null;
+
+            foreach (var culture in settings.Cultures)
+            {
+                if (string.Equals(culture.BaseUrl, baseUrl, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    currentCulture = culture;
+                    break;
+                }
+
+                if (IsAllowedBaseUrl(culture, baseUrl))
+                {
+                    currentCulture = culture;
+                    break;
+                }
+            }
+
+            return currentCulture;
+        }
+
+        public bool IsAllowedBaseUrl(DomainCultureRecord culture, string baseUrl)
+        {
+            if (!string.IsNullOrEmpty(culture.AllowedBaseUrl))
+            {
+                var regex = new Regex(culture.AllowedBaseUrl);
+                if (regex.IsMatch(baseUrl))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

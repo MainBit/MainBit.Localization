@@ -27,6 +27,7 @@ namespace MainBit.Localization
                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                    .Column<string>("Culture")
                    .Column<string>("BaseUrl")
+                   .Column<string>("AllowedBaseUrl")
                    .Column<string>("UrlPrefix")
                    .Column<int>("Position")
                    .Column<string>("DisplayName")

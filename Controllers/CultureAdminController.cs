@@ -9,6 +9,7 @@ using Orchard.ContentManagement;
 using MainBit.Localization.Models;
 using Orchard.Data;
 using Orchard.UI.Admin;
+using MainBit.Localization.Extensions;
 using MainBit.Localization.Services;
 using MainBit.Localization.ViewModels;
 using System.Net;
@@ -98,7 +99,8 @@ namespace MainBit.Localization.Controllers {
 
         private bool Validate(DomainCultureViewModel viewModel, DomainCultureRecord record)
         {
-            viewModel.BaseUrl = viewModel.BaseUrl.TrimEnd('/');
+            viewModel.BaseUrl = viewModel.BaseUrl.TrimSafe().TrimEnd('/');
+            viewModel.AllowedBaseUrl = viewModel.AllowedBaseUrl.TrimSafe();
 
             // ensure the base url is absolute if provided
             if (!String.IsNullOrWhiteSpace(viewModel.BaseUrl))
@@ -135,6 +137,7 @@ namespace MainBit.Localization.Controllers {
         {
             record.Culture = string.IsNullOrWhiteSpace(viewModel.Culture) ? viewModel.SystemCulture : viewModel.Culture;
             record.BaseUrl = viewModel.BaseUrl;
+            record.AllowedBaseUrl = viewModel.AllowedBaseUrl;
             record.UrlPrefix = viewModel.UrlPrefix;
             record.Position = viewModel.Position;
             record.DisplayName = viewModel.DisplayName;
@@ -155,6 +158,7 @@ namespace MainBit.Localization.Controllers {
                 viewModel.Id = record.Id;
                 viewModel.Culture = record.Culture;
                 viewModel.BaseUrl = record.BaseUrl;
+                viewModel.AllowedBaseUrl = record.AllowedBaseUrl;
                 viewModel.UrlPrefix = record.UrlPrefix;
                 viewModel.Position = record.Position;
                 viewModel.DisplayName = record.DisplayName;

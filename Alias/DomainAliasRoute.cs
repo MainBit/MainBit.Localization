@@ -49,7 +49,7 @@ namespace MainBit.Localization.Alias {
                 
                 // Domain culture settings
                 var settings = workContext.CurrentSite.As<DomainLocalizationSettingsPart>();
-                var currentBaseUrl = httpContext.ApplicationInstance.Request.GetBaseUrl();
+                var currentBaseUrl = httpContext.Request.GetBaseUrl();
                 var currentCulture = _domainCultureHelper.GetCultureByBaseUrl(settings, currentBaseUrl);
 
                 if (currentCulture == null) { return null; }

@@ -13,6 +13,7 @@ using MainBit.Localization.Services;
 using Orchard.UI.Admin;
 using Orchard.Localization.Services;
 using MainBit.Localization.Helpers;
+using MainBit.Localization.Extensions;
 
 namespace MainBit.Localization
 {
@@ -54,6 +55,7 @@ namespace MainBit.Localization
             var contentCultureName = _localizationService.GetContentCulture(content);
             var contentCulture = _domainCultureHelper.GetCultureByName(settings, contentCultureName);
             var currentCulture = _domainCultureHelper.GetCurrentCulture(settings);
+            var currentBaseUrl = filterContext.RequestContext.HttpContext.Request.GetBaseUrl();
 
             var virtualPath = filterContext.HttpContext.Request.AppRelativeCurrentExecutionFilePath.Substring(2)
                     + filterContext.HttpContext.Request.PathInfo;
@@ -71,7 +73,10 @@ namespace MainBit.Localization
 
             if (contentCulture != currentCulture || needRedirect)
             {
-                filterContext.Result = new RedirectResult(UrlBuilder.Combine(contentCulture.BaseUrl, virtualPath));
+                filterContext.Result = new RedirectResult(UrlBuilder.Combine(
+                    _domainCultureHelper.IsAllowedBaseUrl(currentCulture, currentBaseUrl) ? currentBaseUrl : contentCulture.BaseUrl,
+                    virtualPath
+                ));
             }
         }
     }

@@ -29,7 +29,7 @@ namespace MainBit.Localization.Selectors
             if (context == null || ContextHelpers.IsRequestAdmin(context)) return null;
 
             var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
-            var currentBaseUrl = context.ApplicationInstance.Request.GetBaseUrl();
+            var currentBaseUrl = context.Request.GetBaseUrl();
             var currentCulture = _domainCultureHelper.GetCultureByBaseUrl(settings, currentBaseUrl);
 
             if (currentCulture != null)

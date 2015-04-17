@@ -130,6 +130,7 @@
     <Compile Include="Drivers\DomainLocalizationPartDriver.cs" />
     <Compile Include="Extensions\ContentItemExtensions.cs" />
     <Compile Include="Extensions\BaseUrlExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Handlers\DomainLocalizationPartHandler.cs" />
     <Compile Include="Handlers\DomainLocalizationSettingsPartHandler.cs" />
@@ -160,9 +161,6 @@
     <Content Include="Placement.info" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\CulturePicker.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\CultureAdmin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CultureAdmin\GetSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\CulturePicker.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

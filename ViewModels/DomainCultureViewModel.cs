@@ -13,6 +13,7 @@ namespace MainBit.Localization.ViewModels
 
         public string Culture { get; set; }
         public string BaseUrl { get; set; }
+        public virtual string AllowedBaseUrl { get; set; }
         public string UrlPrefix { get; set; }
         public int Position { get; set; }
         public string DisplayName { get; set; }
