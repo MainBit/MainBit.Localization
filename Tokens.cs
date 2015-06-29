@@ -33,7 +33,7 @@ namespace MainBit.Localization
 
         public void Evaluate(EvaluateContext context)
         {
-            context.For<WorkContext>("WorkContext")
+            context.For<WorkContext>("WorkContext", () => _wca.GetContext())
                 .Token("CurrentCulture", x => _wca.GetContext().CurrentCulture)
                 .Chain("CurrentCulture", "Culture", x => CultureInfo.GetCultureInfo(_wca.GetContext().CurrentCulture))
                 ;
