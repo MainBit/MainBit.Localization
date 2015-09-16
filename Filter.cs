@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using MainBit.Common.Services;
+using MainBit.Utility.Services;
 using Orchard.Localization.Models;
 using MainBit.Localization.Services;
 using Orchard.UI.Admin;

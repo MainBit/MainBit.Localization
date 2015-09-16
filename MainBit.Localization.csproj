@@ -92,10 +92,13 @@
       <Name>Orchard.Core</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\MainBit.Common\MainBit.Common.csproj">
-      <Project>{3fc89605-8aa6-4e24-b954-f954de7d3c6d}</Project>
-      <Name>MainBit.Common</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\MainBit.Alias\MainBit.Alias.csproj">
+      <Project>{27833a1d-5b73-4268-9eb8-b25ee4f15eef}</Project>
+      <Name>MainBit.Alias</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MainBit.Utility\MainBit.Utility.csproj">
+      <Project>{34cb6685-15d4-4ef8-8791-2e1efac64339}</Project>
+      <Name>MainBit.Utility</Name>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Alias\Orchard.Alias.csproj">
       <Project>{475b6c45-b27c-438b-8966-908b9d6d1077}</Project>
@@ -126,8 +129,6 @@
   <ItemGroup>
     <Compile Include="AdminMenuDependentSite.cs" />
     <Compile Include="AdminMenuMainSite.cs" />
-    <Compile Include="Alias\DomainAliasRoute.cs" />
-    <Compile Include="Alias\DomainAliasRouteProvider.cs" />
     <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\CultureAdminController.cs" />
     <Compile Include="Drivers\CulturePickerPartDriver.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Models\DomainLocalizationPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Selectors\DomainCultureSelector.cs" />
+    <Compile Include="Services\CultureUrlSegmentProvider.cs" />
     <Compile Include="Services\IDomainCultureHelper.cs" />
     <Compile Include="Services\IDomainCultureService.cs" />
     <Compile Include="Services\IDomainLocalizationService.cs" />

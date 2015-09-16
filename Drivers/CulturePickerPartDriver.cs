@@ -8,7 +8,7 @@ using Orchard.Localization.Services;
 using Orchard.ContentManagement;
 using MainBit.Localization.ViewModels;
 using System.Linq;
-using MainBit.Common.Services;
+using MainBit.Utility.Services;
 using Orchard.Localization.Models;
 
 namespace MainBit.Localization.Drivers

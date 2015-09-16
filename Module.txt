@@ -9,7 +9,7 @@ Features:
     MainBit.Localization:
         Category: Localization
 		Description: Description for feature MainBit.Localization
-		Dependencies: MainBit.Common, Orchard.Localization, Orchard.Tokens
+		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens
 	MainBit.Localization.MainSite:
 		Category: Localization
 		Description: Must be enabled only for main site. Allow editing domain culture settings.
