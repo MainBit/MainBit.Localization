@@ -5,9 +5,9 @@ using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Handlers {
     [OrchardFeature("MainBit.Localization.MainSite")]
-    public class DomainLocalizationPartHandler : ContentHandler {
+    public class MainBitLocalizationPartHandler : ContentHandler {
 
-        public DomainLocalizationPartHandler(IRepository<DomainLocalizationPartRecord> repository)
+        public MainBitLocalizationPartHandler(IRepository<MainBitLocalizationPartRecord> repository)
         {
             Filters.Add(StorageFilter.For(repository));
         }

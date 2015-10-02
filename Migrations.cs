@@ -22,13 +22,11 @@ namespace MainBit.Localization
             //       .Column<string>("Title")
             //);
 
-            SchemaBuilder.CreateTable("DomainCultureRecord",
+            SchemaBuilder.CreateTable("MainBitCultureRecord",
                table => table
                    .Column<int>("Id", column => column.PrimaryKey().Identity())
-                   .Column<string>("Culture")
-                   .Column<string>("BaseUrl")
-                   .Column<string>("AllowedBaseUrl")
-                   .Column<string>("UrlPrefix")
+                   .Column<string>("Culture", col => col.WithLength(8))
+                   .Column<string>("UrlSegment", col => col.WithLength(16))
                    .Column<int>("Position")
                    .Column<string>("DisplayName")
                    .Column<bool>("IsMain")

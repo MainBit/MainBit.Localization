@@ -1,0 +1,35 @@
+﻿@model IList<MainBit.Localization.Models.MainBitCultureRecord>
+@{
+    Layout.Title = T("List of cultures");
+}
+@Html.AntiForgeryTokenOrchard()
+<div class="manage">
+    @Html.ActionLink(T("Add").Text, "Add", null, new { @class = "button primaryAction" })
+</div>
+<table class="items">
+    <thead>
+        <tr>
+            <td>@T("Culture")</td>
+            <td>@T("Url segment")</td>
+            <td>@T("Display name")</td>
+            <td>@T("Position")</td>
+            <td>@T("Actions")</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Culture</td>
+                <td>@item.UrlSegment</td>
+                <td>@item.DisplayName</td>
+                <td>@item.Position</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    @T(" | ")
+                    @Html.ActionLink("Remove", "Remove", new { id = item.Id }, new { itemprop = "RemoveUrl UnsafeUrl" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

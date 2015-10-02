@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace MainBit.Localization.Models
 {
-    public class DomainLocalizationSettingsPart : ContentPart
+    public class MainBitLocalizationSettingsPart : ContentPart
     {
-        private readonly LazyField<IList<DomainCultureRecord>> _cultures = new LazyField<IList<DomainCultureRecord>>();
-        public LazyField<IList<DomainCultureRecord>> CulturesField { get { return _cultures; } }
-        public IList<DomainCultureRecord> Cultures
+        private readonly LazyField<IList<MainBitCultureRecord>> _cultures = new LazyField<IList<MainBitCultureRecord>>();
+        public LazyField<IList<MainBitCultureRecord>> CulturesField { get { return _cultures; } }
+        public IList<MainBitCultureRecord> Cultures
         {
             get { return _cultures.Value; }
             set { _cultures.Value = value; }

@@ -10,34 +10,34 @@ using MainBit.Localization.Models;
 using Orchard;
 using MainBit.Localization.Extensions;
 using MainBit.Localization.Services;
+using MainBit.Alias.Services;
+using MainBit.Localization.Providers;
 
 namespace MainBit.Localization.Selectors
 {
     public class DomainCultureSelector : ICultureSelector {
         private readonly IOrchardServices _orchardServices;
         private readonly IDomainCultureHelper _domainCultureHelper;
+        private readonly IUrlService _urlService;
 
         public DomainCultureSelector(
             IOrchardServices orchardServices,
-            IDomainCultureHelper domainCultureHelper)
+            IDomainCultureHelper domainCultureHelper,
+            IUrlService urlService)
         {
             _orchardServices = orchardServices;
             _domainCultureHelper = domainCultureHelper;
+            _urlService = urlService;
         }
 
         public CultureSelectorResult GetCulture(HttpContextBase context) {
             if (context == null || ContextHelpers.IsRequestAdmin(context)) return null;
 
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
-            var currentBaseUrl = context.Request.GetBaseUrl();
-            var currentCulture = _domainCultureHelper.GetCultureByBaseUrl(settings, currentBaseUrl);
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
+            var urlContext = _urlService.CurrentUrlContext();
+            if (urlContext == null) { return null; }
 
-            if (currentCulture != null)
-            {
-                return new CultureSelectorResult { Priority = 10, CultureName = currentCulture.Culture };
-            }
-
-            return null;
+            return new CultureSelectorResult { Priority = 10, CultureName = urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] };
         }
     }
 }

@@ -6,14 +6,14 @@ using System.Collections.Generic;
 namespace MainBit.Localization.Models
 {
     [OrchardFeature("MainBit.Localization.MainSite")]
-    public class DomainLocalizationPartRecord : ContentPartRecord
+    public class MainBitLocalizationPartRecord : ContentPartRecord
     {
-        public DomainLocalizationPartRecord()
+        public MainBitLocalizationPartRecord()
         {
-            Items = new List<DomainLocalizationItemRecord>();
+            Items = new List<MainBitLocalizationItemRecord>();
         }
 
         [CascadeAllDeleteOrphan]
-        public virtual IList<DomainLocalizationItemRecord> Items { get; set; }
+        public virtual IList<MainBitLocalizationItemRecord> Items { get; set; }
     }
 }

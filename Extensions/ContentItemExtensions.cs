@@ -12,8 +12,8 @@ namespace MainBit.Localization.Extensions
         public static string ItemDisplayUrl(this UrlHelper urlHelper, IContent content)
         {
             var workContext = urlHelper.RequestContext.GetWorkContext();
-            var domainLocalizationService = workContext.Resolve<IDomainLocalizationService>();
-            return domainLocalizationService.ItemDisplayUrl(content);
+            var mainbitLocalizationService = workContext.Resolve<IMainBitLocalizationService>();
+            return mainbitLocalizationService.ItemDisplayUrl(content);
         }
     }
 }

@@ -10,10 +10,10 @@ using System.Web;
 namespace MainBit.Localization.Models
 {
     [OrchardFeature("MainBit.Localization.MainSite")]
-    public class DomainLocalizationItemRecord
+    public class MainBitLocalizationItemRecord
     {
         public virtual int Id { get; set; }
-        public virtual int DomainLocalizationPartRecord_Id { get; set; }
+        public virtual int MainBitLocalizationPartRecord_Id { get; set; }
         public virtual int CultureRecord_Id { get; set; }
         public virtual int LocalizedContentItemId { get; set; }
     }

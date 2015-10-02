@@ -9,7 +9,7 @@ using Orchard.ContentManagement;
 using MainBit.Localization.Models;
 using Orchard.Data;
 using Orchard.UI.Admin;
-using MainBit.Localization.Extensions;
+using MainBit.Utility.Extensions;
 using MainBit.Localization.Services;
 using MainBit.Localization.ViewModels;
 using System.Net;
@@ -22,11 +22,11 @@ namespace MainBit.Localization.Controllers {
     public class CultureAdminController : Controller, IUpdateModel
     {
 
-        private readonly IDomainCultureService _domainCultureService;
+        private readonly IMainBitCultureService _domainCultureService;
         private readonly INotifier _notifier;
 
         public CultureAdminController(IOrchardServices services,
-            IDomainCultureService domainCultureService,
+            IMainBitCultureService domainCultureService,
             INotifier notifier)
         {
             Services = services;
@@ -41,40 +41,28 @@ namespace MainBit.Localization.Controllers {
         public Localizer T { get; set; }
         public ILogger Logger { get; set; }
 
-        public ActionResult GetSettings()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult GetSettings(string baseUrl)
-        {
-            return GetSettings();
-        }
-
-
-        public ActionResult List() {
-            var settings = Services.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+        public ActionResult Index() {
+            var settings = Services.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             return View(settings.Cultures);
         }
 
-        public ActionResult Create()
+        public ActionResult Add()
         {
             var viewModel = CreateViewModel(null);
             return View(viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(DomainCultureViewModel viewModel)
+        public ActionResult Add(MainBitCultureViewModel viewModel)
         {
             if (Validate(viewModel, null))
             {
-                var record = new DomainCultureRecord();
+                var record = new MainBitCultureRecord();
                 UpdateRecord(viewModel, record);
                 _domainCultureService.Create(record);
             }
-           
-            return RedirectToAction("List");
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int id)
@@ -85,7 +73,7 @@ namespace MainBit.Localization.Controllers {
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, DomainCultureViewModel viewModel)
+        public ActionResult Edit(int id, MainBitCultureViewModel viewModel)
         {
             var record = _domainCultureService.Get(id);
             if (Validate(viewModel, record))
@@ -94,61 +82,27 @@ namespace MainBit.Localization.Controllers {
                 _domainCultureService.Update(record);
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Index");
         }
 
-        private bool Validate(DomainCultureViewModel viewModel, DomainCultureRecord record)
+        private bool Validate(MainBitCultureViewModel viewModel, MainBitCultureRecord record)
         {
-            viewModel.BaseUrl = viewModel.BaseUrl.TrimSafe().TrimEnd('/');
-            viewModel.AllowedBaseUrl = viewModel.AllowedBaseUrl.TrimSafe();
-
-            // ensure the base url is absolute if provided
-            if (!String.IsNullOrWhiteSpace(viewModel.BaseUrl))
-            {
-                var previousBaseUrl = record != null ? record.BaseUrl : "";
-
-                if (!Uri.IsWellFormedUriString(viewModel.BaseUrl, UriKind.Absolute))
-                {
-                    AddModelError("Base Url", T("The Base Url must be absolute."));
-                    return false;
-                }
-                // if the base url has been modified, try to ping it
-                else if (!String.Equals(previousBaseUrl, viewModel.BaseUrl, StringComparison.OrdinalIgnoreCase))
-                {
-                    try
-                    {
-                        var request = WebRequest.Create(viewModel.BaseUrl) as HttpWebRequest;
-                        if (request != null)
-                        {
-                            using (request.GetResponse() as HttpWebResponse) { }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        _notifier.Warning(T("The base url you entered could not be requested from current location."));
-                        Logger.Warning(e, "Could not query base url: {0}", viewModel.BaseUrl);
-                    }
-                }
-            }
-
             return true;
         }
-        private void UpdateRecord(DomainCultureViewModel viewModel, DomainCultureRecord record)
+        private void UpdateRecord(MainBitCultureViewModel viewModel, MainBitCultureRecord record)
         {
             record.Culture = string.IsNullOrWhiteSpace(viewModel.Culture) ? viewModel.SystemCulture : viewModel.Culture;
-            record.BaseUrl = viewModel.BaseUrl;
-            record.AllowedBaseUrl = viewModel.AllowedBaseUrl;
-            record.UrlPrefix = viewModel.UrlPrefix;
+            record.UrlSegment = viewModel.UrlSegment.TrimSafe();
             record.Position = viewModel.Position;
             record.DisplayName = viewModel.DisplayName;
             record.IsMain = viewModel.IsMain;
             record.AppDomainSiteRecord_Id = viewModel.AppDomainSiteRecord_Id;
             
         }
-        private DomainCultureViewModel CreateViewModel(DomainCultureRecord record)
+        private MainBitCultureViewModel CreateViewModel(MainBitCultureRecord record)
         {
-            var settings = Services.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
-            var viewModel = new DomainCultureViewModel();
+            var settings = Services.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
+            var viewModel = new MainBitCultureViewModel();
 
             viewModel.AvailableSystemCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
                 .Select(ci => ci.Name)
@@ -157,9 +111,7 @@ namespace MainBit.Localization.Controllers {
             if(record != null) {
                 viewModel.Id = record.Id;
                 viewModel.Culture = record.Culture;
-                viewModel.BaseUrl = record.BaseUrl;
-                viewModel.AllowedBaseUrl = record.AllowedBaseUrl;
-                viewModel.UrlPrefix = record.UrlPrefix;
+                viewModel.UrlSegment = record.UrlSegment;
                 viewModel.Position = record.Position;
                 viewModel.DisplayName = record.DisplayName;
                 viewModel.IsMain = record.IsMain;

@@ -1,5 +1,5 @@
 ﻿<Placement>
     <Place Parts_CulturePicker="Content:1" />
-    <Place Parts_DomainLocalizationSettingsPart_Edit="Content:10" />
-    <Place Parts_DomainLocalizationPart_Edit="Content:10" />
+    <Place Parts_MainBitLocalizationSettingsPart_Edit="Content:10" />
+    <Place Parts_MainBitLocalizationPart_Edit="Content:10" />
 </Placement>

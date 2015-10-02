@@ -1,0 +1,27 @@
+﻿msgid "Localization"
+msgstr "Локализация"
+
+#: "MainBit.Localization.AdminMenu.MainSite"
+msgctxt "MainBit.Localization.AdminMenu.MainSite"
+msgid "List of cultures"
+msgstr "Список культур"
+
+
+
+#: "~/Modules/MainBit.Localization/Views/CultureAdmin/Index.cshtml"
+msgctxt "~/Modules/MainBit.Localization/Views/CultureAdmin/Index.cshtml"
+msgid "List of cultures"
+msgstr "Список культур"
+
+
+#: "~/Modules/MainBit.Localization/Views/CultureAdmin/Add.cshtml"
+msgctxt "~/Modules/MainBit.Localization/Views/CultureAdmin/Add.cshtml"
+msgid "Add culture"
+msgstr "Добавить культуру"
+
+
+
+#: "~/Modules/MainBit.Localization/Views/CultureAdmin/Add.cshtml"
+msgctxt "~/Modules/MainBit.Localization/Views/CultureAdmin/Add.cshtml"
+msgid "Update culture"
+msgstr "Обновить культуру"

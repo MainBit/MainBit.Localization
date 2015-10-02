@@ -1,7 +1,10 @@
 ﻿using MainBit.Alias;
 using MainBit.Alias.Descriptors;
+using MainBit.Localization.Models;
+using MainBit.Localization.Services;
 using Orchard;
 using Orchard.Caching;
+using Orchard.ContentManagement;
 using Orchard.Localization.Services;
 using System;
 using System.Collections.Generic;
@@ -9,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 
-namespace MainBit.Localization.Services
+namespace MainBit.Localization.Providers
 {
     public class CultureUrlSegmentProvider : IUrlSegmentProvider
     {
@@ -29,19 +32,21 @@ namespace MainBit.Localization.Services
 
         public void Describe(DescribeUrlSegmentsContext context)
         {
-            var cultureManager = _wca.GetContext().Resolve<ICultureManager>();
-            var siteCulture = cultureManager.GetSiteCulture();
-            var cultures = cultureManager.ListCultures()
-                .Where(c => c != siteCulture)
-                .Select(c => CultureInfo.GetCultureInfo(c).TwoLetterISOLanguageName);
-            var defaultCultures = CultureInfo.GetCultureInfo(siteCulture).TwoLetterISOLanguageName;
+            var workContext = _wca.GetContext();
+            var settings = workContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
 
-            context.Element(Name, cultures, defaultCultures);
+            var defaultCulture = settings.Cultures.FirstOrDefault(c => c.Culture != workContext.CurrentSite.SiteCulture);
+            var otherCultures = settings.Cultures.Where(c => c != defaultCulture);
+
+            context.Element(Name,
+                otherCultures.Select(c => c.UrlSegment),
+                defaultCulture != null ? defaultCulture.UrlSegment : "");
         }
 
         public void MonitorChanged(AcquireContext<string> acquire)
         {
             acquire.Monitor(_signals.When("culturesChanged"));
+            acquire.Monitor(_signals.When("MainBitCulture.Changed"));
         }
     }
 }

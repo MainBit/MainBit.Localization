@@ -12,20 +12,20 @@ using Orchard.Mvc.Html;
 
 namespace MainBit.Localization.Controllers {
     public class CultureController : Controller {
-        private readonly IDomainLocalizationService _domainLocalizationService;
+        private readonly IMainBitLocalizationService _mainbitLocalizationService;
         
         public CultureController(IOrchardServices services,
-            IDomainLocalizationService domainLocalizationService)
+            IMainBitLocalizationService mainbitLocalizationService)
         {
             Services = services;
-            _domainLocalizationService = domainLocalizationService;
+            _mainbitLocalizationService = mainbitLocalizationService;
         }
 
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
 
         public ActionResult MainItem(int id, string culture, string toCulture) {
-            var destUrl = _domainLocalizationService.GetDestUrl(id, culture, toCulture);
+            var destUrl = _mainbitLocalizationService.GetDestUrl(id, culture, toCulture);
             return RedirectPermanent(destUrl);
 
         }

@@ -11,17 +11,17 @@ namespace MainBit.Localization
 
         public int Create() {
 
-            SchemaBuilder.CreateTable("DomainLocalizationPartRecord", table => table
+            SchemaBuilder.CreateTable("MainBitLocalizationPartRecord", table => table
                 .ContentPartRecord());
 
-            ContentDefinitionManager.AlterPartDefinition("DomainLocalizationPart", builder => 
+            ContentDefinitionManager.AlterPartDefinition("MainBitLocalizationPart", builder => 
                 builder.Attachable());
 
-            SchemaBuilder.CreateTable("DomainLocalizationItemRecord",
+            SchemaBuilder.CreateTable("MainBitLocalizationItemRecord",
                 table => table
                     .Column<int>("Id", column => column.PrimaryKey().Identity())
-                    .Column<int>("DomainLocalizationPartRecord_Id")
-                    .Column<int>("DomainLocalizationSettingsItemRecord_Id")
+                    .Column<int>("MainBitLocalizationPartRecord_Id")
+                    .Column<int>("MainBitLocalizationSettingsItemRecord_Id")
                     .Column<int>("LocalizedContentItemId")
                 );
 

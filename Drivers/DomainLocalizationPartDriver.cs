@@ -6,35 +6,35 @@ using Orchard.Environment.Extensions;
 namespace MainBit.Localization.Drivers
 {
     [OrchardFeature("MainBit.Localization.MainSite")]
-    public class DomainLocalizationPartDriver : ContentPartDriver<DomainLocalizationPart>
+    public class MainBitLocalizationPartDriver : ContentPartDriver<MainBitLocalizationPart>
     {
         /// <summary>
         /// Always implement Prefix to avoid potential model binding naming collisions when another part uses the same property names.
         /// </summary>
         protected override string Prefix
         {
-            get { return "DomainLocalizationPart"; }
+            get { return "MainBitLocalizationPart"; }
         }
 
-        protected override DriverResult Editor(DomainLocalizationPart part, dynamic shapeHelper)
+        protected override DriverResult Editor(MainBitLocalizationPart part, dynamic shapeHelper)
         {
             return Editor(part, null, shapeHelper);
         }
 
-        protected override DriverResult Editor(DomainLocalizationPart part, IUpdateModel updater, dynamic shapeHelper)
+        protected override DriverResult Editor(MainBitLocalizationPart part, IUpdateModel updater, dynamic shapeHelper)
         {
-            var domainLocalizationItemRecord = part.Items.Count > 0 ? part.Items[0] : new DomainLocalizationItemRecord();
+            var mainbitLocalizationItemRecord = part.Items.Count > 0 ? part.Items[0] : new MainBitLocalizationItemRecord();
             if (updater != null)
             {
                 // We are in "postback" mode, so update our part
                 // now only one localizde item
-                if (updater.TryUpdateModel(domainLocalizationItemRecord, Prefix, null, null))
+                if (updater.TryUpdateModel(mainbitLocalizationItemRecord, Prefix, null, null))
                 {
-                    if (domainLocalizationItemRecord.LocalizedContentItemId > 0)
+                    if (mainbitLocalizationItemRecord.LocalizedContentItemId > 0)
                     {
                         if (part.Items.Count == 0)
                         {
-                            part.Items.Add(domainLocalizationItemRecord);
+                            part.Items.Add(mainbitLocalizationItemRecord);
                         }
                     }
                     else
@@ -49,8 +49,8 @@ namespace MainBit.Localization.Drivers
             }
 
             // Return the EditorTemplate shape, configured with proper values.
-            return ContentShape("Parts_DomainLocalizationPart_Edit", () =>
-                shapeHelper.EditorTemplate(TemplateName: "Parts/DomainLocalizationPart", Model: domainLocalizationItemRecord, Prefix: Prefix));
+            return ContentShape("Parts_MainBitLocalizationPart_Edit", () =>
+                shapeHelper.EditorTemplate(TemplateName: "Parts/MainBitLocalizationPart", Model: mainbitLocalizationItemRecord, Prefix: Prefix));
         }
     }
 }

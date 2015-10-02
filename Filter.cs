@@ -14,28 +14,35 @@ using Orchard.UI.Admin;
 using Orchard.Localization.Services;
 using MainBit.Localization.Helpers;
 using MainBit.Localization.Extensions;
+using MainBit.Alias.Services;
+using MainBit.Alias;
+using System.Globalization;
+using MainBit.Localization.Providers;
 
 namespace MainBit.Localization
 {
     public class Filter : FilterProvider, IActionFilter
     {
-        private readonly IOrchardServices _orchardServices;
+        private readonly IWorkContextAccessor _wca;
         private readonly ICurrentContentAccessor _currentContentAccessor;
-        private readonly IDomainLocalizationService _domainLocalizationService;
+        private readonly IMainBitLocalizationService _mainBitLocalizationService;
         private readonly ILocalizationService _localizationService;
         private readonly IDomainCultureHelper _domainCultureHelper;
+        private readonly IUrlService _urlService;
 
-        public Filter(IOrchardServices orchardServices,
+        public Filter(IWorkContextAccessor wca,
             ICurrentContentAccessor currentContentAccessor,
-            IDomainLocalizationService domainLocalizationService,
+            IMainBitLocalizationService mainBitLocalizationService,
             ILocalizationService localizationService,
-            IDomainCultureHelper domainCultureHelper)
+            IDomainCultureHelper domainCultureHelper,
+            IUrlService urlService)
         {
-            _orchardServices = orchardServices;
+            _wca = wca;
             _currentContentAccessor = currentContentAccessor;
-            _domainLocalizationService = domainLocalizationService;
+            _mainBitLocalizationService = mainBitLocalizationService;
             _localizationService = localizationService;
             _domainCultureHelper = domainCultureHelper;
+            _urlService = urlService;
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
@@ -50,33 +57,19 @@ namespace MainBit.Localization
             var content = _currentContentAccessor.CurrentContentItem;
             if (content == null) { return; }
 
-            var workContext = _orchardServices.WorkContext;
-            var settings = workContext.CurrentSite.As<DomainLocalizationSettingsPart>();
-            var contentCultureName = _localizationService.GetContentCulture(content);
-            var contentCulture = _domainCultureHelper.GetCultureByName(settings, contentCultureName);
-            var currentCulture = _domainCultureHelper.GetCurrentCulture(settings);
-            var currentBaseUrl = filterContext.RequestContext.HttpContext.Request.GetBaseUrl();
+            var urlContext = _urlService.CurrentUrlContext();
+            if (urlContext == null) { return; }
 
-            var virtualPath = filterContext.HttpContext.Request.AppRelativeCurrentExecutionFilePath.Substring(2)
-                    + filterContext.HttpContext.Request.PathInfo;
-            var needRedirect = false;
-            if (virtualPath == contentCulture.UrlPrefix)
-            {
-                needRedirect = true;
-                virtualPath = "";
-            }
-            else if (virtualPath.StartsWith(contentCulture.UrlPrefix + "/"))
-            {
-                needRedirect = true;
-                virtualPath = virtualPath.Substring(contentCulture.UrlPrefix.Length + 1);
-            }
+            var contentCulture = _localizationService.GetContentCulture(content);
+            var contentMainBitCulture = _mainBitLocalizationService.GetCulture(contentCulture);
+            if (contentMainBitCulture == null) { return; }
 
-            if (contentCulture != currentCulture || needRedirect)
+            if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] != contentMainBitCulture.UrlSegment)
             {
-                filterContext.Result = new RedirectResult(UrlBuilder.Combine(
-                    _domainCultureHelper.IsAllowedBaseUrl(currentCulture, currentBaseUrl) ? currentBaseUrl : contentCulture.BaseUrl,
-                    virtualPath
-                ));
+                var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string> {
+                    { CultureUrlSegmentProvider.Name, contentMainBitCulture.UrlSegment }});
+
+                filterContext.Result = new RedirectResult(newUrlContext.GetFullDisplayUrl());
             }
         }
     }

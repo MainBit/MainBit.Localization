@@ -5,9 +5,10 @@ using System.Collections.Generic;
 namespace MainBit.Localization.Models
 {
     [OrchardFeature("MainBit.Localization.MainSite")]
-    public class DomainLocalizationPart : ContentPart<DomainLocalizationPartRecord>
+    public class MainBitLocalizationPart : ContentPart<MainBitLocalizationPartRecord>
     {
-        public IList<DomainLocalizationItemRecord> Items {
+        public IList<MainBitLocalizationItemRecord> Items
+        {
             get { return Record.Items; }
             set { Record.Items = value; } 
         }

@@ -6,101 +6,88 @@ using System.Linq;
 using System.Web;
 using MainBit.Localization.Models;
 using System.Text.RegularExpressions;
+using MainBit.Alias.Services;
+using Orchard.Mvc;
+using System.Globalization;
+using MainBit.Localization.Providers;
 
 namespace MainBit.Localization.Services
 {
     public interface IDomainCultureHelper : IDependency
     {
-        DomainCultureRecord GetMainCulture();
-        DomainCultureRecord GetMainCulture(DomainLocalizationSettingsPart settings);
-        DomainCultureRecord GetCurrentCulture();
-        DomainCultureRecord GetCurrentCulture(DomainLocalizationSettingsPart settings);
-        DomainCultureRecord GetCultureByName(string cultureName);
-        DomainCultureRecord GetCultureByName(DomainLocalizationSettingsPart settings, string cultureName);
-        DomainCultureRecord GetCultureByBaseUrl(string cultureName);
-        DomainCultureRecord GetCultureByBaseUrl(DomainLocalizationSettingsPart settings, string cultureName);
-        bool IsAllowedBaseUrl(DomainCultureRecord culture, string baseUrl);
+        MainBitCultureRecord GetMainCulture();
+        MainBitCultureRecord GetMainCulture(MainBitLocalizationSettingsPart settings);
+        MainBitCultureRecord GetCurrentCulture();
+        MainBitCultureRecord GetCurrentCulture(MainBitLocalizationSettingsPart settings);
+        MainBitCultureRecord GetCultureByName(string cultureName);
+        MainBitCultureRecord GetCultureByName(MainBitLocalizationSettingsPart settings, string cultureName);
+        MainBitCultureRecord GetCultureByBaseUrl(string cultureName);
+        MainBitCultureRecord GetCultureByBaseUrl(MainBitLocalizationSettingsPart settings, string cultureName);
     }
 
     public class DomainCultureHelper : IDomainCultureHelper
     {
         private readonly IOrchardServices _orchardServices;
+        private readonly IUrlService _urlService;
 
-        public DomainCultureHelper(IOrchardServices orchardServices)
+        public DomainCultureHelper(IOrchardServices orchardServices,
+            IUrlService urlService)
         {
             _orchardServices = orchardServices;
+            _urlService = urlService;
         }
 
-        public DomainCultureRecord GetMainCulture()
+        public MainBitCultureRecord GetMainCulture()
         {
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             return GetMainCulture(settings);
         }
-        public DomainCultureRecord GetMainCulture(DomainLocalizationSettingsPart settings)
+        public MainBitCultureRecord GetMainCulture(MainBitLocalizationSettingsPart settings)
         {
             return settings.Cultures.FirstOrDefault(c => c.IsMain);
         }
 
-        public DomainCultureRecord GetCurrentCulture()
+        public MainBitCultureRecord GetCurrentCulture()
         {
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             return GetCurrentCulture(settings);
         }
-        public DomainCultureRecord GetCurrentCulture(DomainLocalizationSettingsPart settings)
+        public MainBitCultureRecord GetCurrentCulture(MainBitLocalizationSettingsPart settings)
         {
             var currentCulture = _orchardServices.WorkContext.CurrentCulture;
             return settings.Cultures.FirstOrDefault(c => string.Equals(c.Culture, currentCulture, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public DomainCultureRecord GetCultureByName(string cultureName)
+        public MainBitCultureRecord GetCultureByName(string cultureName)
         {
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             return GetCultureByName(settings, cultureName);
         }
-        public DomainCultureRecord GetCultureByName(DomainLocalizationSettingsPart settings, string cultureName)
+        public MainBitCultureRecord GetCultureByName(MainBitLocalizationSettingsPart settings, string cultureName)
         {
             return settings.Cultures.FirstOrDefault(c => string.Equals(cultureName, c.Culture, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public DomainCultureRecord GetCultureByBaseUrl(string baseUrl)
+        public MainBitCultureRecord GetCultureByBaseUrl(string baseUrl)
         {
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             return GetCultureByBaseUrl(settings, baseUrl);
         }
-        public DomainCultureRecord GetCultureByBaseUrl(DomainLocalizationSettingsPart settings, string baseUrl)
+        public MainBitCultureRecord GetCultureByBaseUrl(MainBitLocalizationSettingsPart settings, string baseUrl)
         {
-            DomainCultureRecord currentCulture = null;
+            var urlContext = _urlService.GetContext(baseUrl);
+            if (urlContext == null) { return null; }
 
             foreach (var culture in settings.Cultures)
             {
-                if (string.Equals(culture.BaseUrl, baseUrl, StringComparison.InvariantCultureIgnoreCase))
+                var cultureInfo = new CultureInfo(culture.Culture);
+                if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] == cultureInfo.TwoLetterISOLanguageName)
                 {
-                    currentCulture = culture;
-                    break;
-                }
-
-                if (IsAllowedBaseUrl(culture, baseUrl))
-                {
-                    currentCulture = culture;
-                    break;
+                    return culture;
                 }
             }
 
-            return currentCulture;
-        }
-
-        public bool IsAllowedBaseUrl(DomainCultureRecord culture, string baseUrl)
-        {
-            if (!string.IsNullOrEmpty(culture.AllowedBaseUrl))
-            {
-                var regex = new Regex(culture.AllowedBaseUrl);
-                if (regex.IsMatch(baseUrl))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return null;
         }
     }
 }

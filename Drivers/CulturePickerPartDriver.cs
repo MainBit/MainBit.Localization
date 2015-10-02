@@ -10,31 +10,38 @@ using MainBit.Localization.ViewModels;
 using System.Linq;
 using MainBit.Utility.Services;
 using Orchard.Localization.Models;
+using MainBit.Alias.Services;
+using Orchard.Mvc;
+using System.Globalization;
 
 namespace MainBit.Localization.Drivers
 {
     [UsedImplicitly]
     public class CulturePickerPartDriver : ContentPartDriver<CulturePickerPart> {
         private readonly IOrchardServices _orchardServices;
-        private readonly IDomainLocalizationService _domainLocalizationService;
+        private readonly IMainBitLocalizationService _mainbitLocalizationService;
         private readonly ICurrentContentAccessor _currentContentAccessor;
         private readonly ILocalizationService _localizationService;
+        private readonly IUrlService _urlService;
+        private readonly IHttpContextAccessor _hta; 
 
         public CulturePickerPartDriver(
             IOrchardServices orchardServices,
-            IDomainLocalizationService domainLocalizationService,
+            IMainBitLocalizationService mainbitLocalizationService,
             ICurrentContentAccessor currentContentAccessor,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            IUrlService urlService)
         {
             _orchardServices = orchardServices;
-            _domainLocalizationService = domainLocalizationService;
+            _mainbitLocalizationService = mainbitLocalizationService;
             _currentContentAccessor = currentContentAccessor;
             _localizationService = localizationService;
+            _urlService = urlService;
         }
 
         protected override DriverResult Display(CulturePickerPart part, string displayType, dynamic shapeHelper) {
 
-            var settings = _orchardServices.WorkContext.CurrentSite.As<DomainLocalizationSettingsPart>();
+            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             var currentContent = _currentContentAccessor.CurrentContentItem;
             var localized = currentContent.As<LocalizationPart>();
             var localizations = new List<LocalizationPart>();
@@ -52,7 +59,8 @@ namespace MainBit.Localization.Drivers
             }
 
             var viewModel = new CulturePickerViewModel();
-            var currentCulture = _orchardServices.WorkContext.CurrentCulture;
+            var currentCultureName = _orchardServices.WorkContext.CurrentCulture;
+            var urlContext = _urlService.CurrentUrlContext();
 
             foreach (var culture in settings.Cultures)
             {
@@ -65,18 +73,21 @@ namespace MainBit.Localization.Drivers
 
                 if (localization != null)
                 {
-                    cultureEntry.Url = _domainLocalizationService.ItemDisplayUrl(localization);
+                    cultureEntry.Url = _mainbitLocalizationService.ItemDisplayUrl(localization);
                 }
                 else
                 {
+                    //var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string>() {
+                    //{ CultureUrlSegmentProvider.Name, cultureEntry.CultureInfo.TwoLetterISOLanguageName }});
+
                     //cultureEntry.Url = _domainLocalizationService.GetUrl(currentContent.Id, culture.Culture);
-                    cultureEntry.Url = culture.BaseUrl;
+                    cultureEntry.Url = ""; // culture.BaseUrl;
                 }
 
                 viewModel.Cultures.Add(cultureEntry);
 
                 if (viewModel.CurrentCulture == null
-                    && string.Equals(culture.Culture, currentCulture, System.StringComparison.InvariantCultureIgnoreCase))
+                    && string.Equals(culture.Culture, currentCultureName, System.StringComparison.InvariantCultureIgnoreCase))
                 {
                     viewModel.CurrentCulture = cultureEntry;
                 }

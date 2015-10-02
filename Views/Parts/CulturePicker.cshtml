@@ -2,12 +2,13 @@
 @using MainBit.Localization.Models
 @{
     var viewModel = Model.ViewModel as MainBit.Localization.ViewModels.CulturePickerViewModel;
+    if (viewModel.CurrentCulture == null) { return; }
 }
-<div class="dropdown language-switcher">
-    <a href="#" id="language-switcher__link" class="text-gray-light target-modal border-inside dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+<div class="dropdown culture-picker">
+    <a href="#" id="culture-picker__link" class="text-gray-light target-modal border-inside dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
         <span class="img-icon-flag img-icon-flag_@(viewModel.CurrentCulture.CultureInfo.TwoLetterISOLanguageName.ToLower())"></span><span class="border">@viewModel.CurrentCulture.DisplayName</span>
     </a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="language-switcher__link">
+    <ul class="dropdown-menu" role="menu" aria-labelledby="culture-picker__link">
         @foreach (var culture in viewModel.Cultures)
         {
             <li @(culture == viewModel.CurrentCulture ? Html.Raw("class=\"active\"") : null)>
