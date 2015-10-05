@@ -77,11 +77,9 @@ namespace MainBit.Localization.Drivers
                 }
                 else
                 {
-                    //var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string>() {
-                    //{ CultureUrlSegmentProvider.Name, cultureEntry.CultureInfo.TwoLetterISOLanguageName }});
-
-                    //cultureEntry.Url = _domainLocalizationService.GetUrl(currentContent.Id, culture.Culture);
-                    cultureEntry.Url = ""; // culture.BaseUrl;
+                    var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string>() {
+                        { MainBit.Localization.Providers.CultureUrlSegmentProvider.Name, culture.UrlSegment }});
+                    cultureEntry.Url = newUrlContext.Descriptor.BaseUrl;
                 }
 
                 viewModel.Cultures.Add(cultureEntry);
