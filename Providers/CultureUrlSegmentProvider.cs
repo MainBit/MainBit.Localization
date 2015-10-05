@@ -5,6 +5,7 @@ using MainBit.Localization.Services;
 using Orchard;
 using Orchard.Caching;
 using Orchard.ContentManagement;
+using Orchard.Core.Settings.Models;
 using Orchard.Localization.Services;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,8 @@ namespace MainBit.Localization.Providers
             var workContext = _wca.GetContext();
             var settings = workContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
 
-            var defaultCulture = settings.Cultures.FirstOrDefault(c => c.Culture != workContext.CurrentSite.SiteCulture);
+            //var siteCulture = workContext.CurrentSite.As<SiteSettingsPart>().SiteCulture;
+            var defaultCulture = settings.Cultures.FirstOrDefault(c => c.Culture == workContext.CurrentSite.SiteCulture);
             var otherCultures = settings.Cultures.Where(c => c != defaultCulture);
 
             context.Element(Name,
