@@ -70,13 +70,24 @@ namespace MainBit.Localization.Services
             var urlContext = _urlService.CurrentUrlContext();
             if (urlContext == null) { return virtualUrl; }
 
-            var culture = new CultureInfo(contentCultureName);
             var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string>() {
-                { CultureUrlSegmentProvider.Name, culture.TwoLetterISOLanguageName }});
+                { CultureUrlSegmentProvider.Name, contentCulture.UrlSegment }});
 
-            var absoluteUrl = UrlBuilder.Combine(
-                newUrlContext.Descriptor.BaseUrl,
-                virtualUrl.Substring(_orchardServices.WorkContext.HttpContext.Request.ApplicationPath.Length));
+            var virtualPath = virtualUrl.Substring(_orchardServices.WorkContext.HttpContext.Request.ApplicationPath.Length).TrimStart('/');
+            if (virtualPath.Equals(newUrlContext.Descriptor.StoredPrefix, StringComparison.InvariantCultureIgnoreCase))
+            {
+                virtualPath = virtualPath.Substring(newUrlContext.Descriptor.StoredPrefix.Length);
+            }
+            else if (virtualPath.StartsWith(newUrlContext.Descriptor.StoredPrefix + "/", StringComparison.InvariantCultureIgnoreCase))
+            {
+                virtualPath = virtualPath.Substring(newUrlContext.Descriptor.StoredPrefix.Length + 1);
+            }
+            else
+            {
+                
+            }
+
+            var absoluteUrl = UrlBuilder.Combine(newUrlContext.Descriptor.BaseUrl, virtualPath);
 
             return absoluteUrl;
         }

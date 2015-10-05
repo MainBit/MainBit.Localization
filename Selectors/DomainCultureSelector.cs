@@ -36,8 +36,9 @@ namespace MainBit.Localization.Selectors
             var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
             var urlContext = _urlService.CurrentUrlContext();
             if (urlContext == null) { return null; }
+            var culture = settings.Cultures.FirstOrDefault(c => c.UrlSegment == urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name]);
 
-            return new CultureSelectorResult { Priority = 10, CultureName = urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] };
+            return new CultureSelectorResult { Priority = 10, CultureName = culture.Culture };
         }
     }
 }
