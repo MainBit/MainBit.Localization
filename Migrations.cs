@@ -26,25 +26,13 @@ namespace MainBit.Localization
                table => table
                    .Column<int>("Id", column => column.PrimaryKey().Identity())
                    .Column<string>("Culture", col => col.WithLength(8))
-                   .Column<string>("UrlSegment", col => col.WithLength(16))
+                   .Column<string>("UrlSegment", col => col.WithLength(255))
+                   .Column<string>("StoredPrefix", col => col.WithLength(255))
                    .Column<int>("Position")
                    .Column<string>("DisplayName")
                    .Column<bool>("IsMain")
                    .Column<int>("AppDomainSiteRecord_Id")
             );
-
-            return 1;
-        }
-
-        public int UpdateFrom1()
-        {
-            
-
-            return 2;
-        }
-
-        public int UpdateFrom2()
-        {
 
             return 3;
         }

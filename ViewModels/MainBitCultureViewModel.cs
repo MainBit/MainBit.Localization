@@ -12,6 +12,7 @@ namespace MainBit.Localization.ViewModels
         public string SystemCulture { get; set; }
         public string Culture { get; set; }
         public string UrlSegment { get; set; }
+        public string StoredPrefix { get; set; }
         public int Position { get; set; }
         public string DisplayName { get; set; }
         public bool IsMain { get; set; }

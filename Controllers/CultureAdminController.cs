@@ -93,6 +93,7 @@ namespace MainBit.Localization.Controllers {
         {
             record.Culture = string.IsNullOrWhiteSpace(viewModel.Culture) ? viewModel.SystemCulture : viewModel.Culture;
             record.UrlSegment = viewModel.UrlSegment.TrimSafe();
+            record.StoredPrefix = viewModel.StoredPrefix.TrimSafe();
             record.Position = viewModel.Position;
             record.DisplayName = viewModel.DisplayName;
             record.IsMain = viewModel.IsMain;
@@ -112,6 +113,7 @@ namespace MainBit.Localization.Controllers {
                 viewModel.Id = record.Id;
                 viewModel.Culture = record.Culture;
                 viewModel.UrlSegment = record.UrlSegment;
+                viewModel.StoredPrefix = record.StoredPrefix;
                 viewModel.Position = record.Position;
                 viewModel.DisplayName = record.DisplayName;
                 viewModel.IsMain = record.IsMain;

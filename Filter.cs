@@ -64,7 +64,7 @@ namespace MainBit.Localization
             var contentMainBitCulture = _mainBitLocalizationService.GetCulture(contentCulture);
             if (contentMainBitCulture == null) { return; }
 
-            if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] != contentMainBitCulture.UrlSegment)
+            if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Value != contentMainBitCulture.UrlSegment)
             {
                 var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string> {
                     { CultureUrlSegmentProvider.Name, contentMainBitCulture.UrlSegment }});

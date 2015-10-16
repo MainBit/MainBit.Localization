@@ -16,6 +16,11 @@
         <span class="hint">@T("")</span>
     </fieldset>
     <fieldset>
+        @Html.LabelFor(m => m.StoredPrefix)
+        @Html.EditorFor(m => m.StoredPrefix)
+        <span class="hint">@T("")</span>
+    </fieldset>
+    <fieldset>
         @Html.LabelFor(m => m.Position)
         @Html.EditorFor(m => m.Position)
         <span class="hint">@T("")</span>

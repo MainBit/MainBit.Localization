@@ -78,16 +78,9 @@ namespace MainBit.Localization.Services
             var urlContext = _urlService.GetContext(baseUrl);
             if (urlContext == null) { return null; }
 
-            foreach (var culture in settings.Cultures)
-            {
-                var cultureInfo = new CultureInfo(culture.Culture);
-                if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name] == cultureInfo.TwoLetterISOLanguageName)
-                {
-                    return culture;
-                }
-            }
-
-            return null;
+            var culture = settings.Cultures.FirstOrDefault(c =>
+                c.UrlSegment == urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Value);
+            return culture;
         }
     }
 }

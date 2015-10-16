@@ -40,9 +40,14 @@ namespace MainBit.Localization.Providers
             var defaultCulture = settings.Cultures.FirstOrDefault(c => c.Culture == workContext.CurrentSite.SiteCulture);
             var otherCultures = settings.Cultures.Where(c => c != defaultCulture);
 
-            context.Element(Name,
-                otherCultures.Select(c => c.UrlSegment),
-                defaultCulture != null ? defaultCulture.UrlSegment : "");
+            context.Element(
+                Name,
+                UrlSegmentValueDescriptorHelper.CreateList(
+                    otherCultures.Select(c => c.UrlSegment).ToArray(),
+                    otherCultures.Select(c => c.StoredPrefix).ToArray()
+                ),
+                defaultCulture != null ? defaultCulture.UrlSegment : "",
+                defaultCulture != null ? defaultCulture.StoredPrefix : "");
         }
 
         public void MonitorChanged(AcquireContext<string> acquire)
