@@ -10,12 +10,12 @@ namespace MainBit.Localization.Handlers
     public class MainBitLocalizationSettingsPartHandler : ContentHandler {
 
         public MainBitLocalizationSettingsPartHandler(
-            IMainBitCultureService domainCultureService)
+            IMainBitCultureRepository mainBitCultureRepository)
         {
             Filters.Add(new ActivatingFilter<MainBitLocalizationSettingsPart>("Site"));
 
-            OnLoading<MainBitLocalizationSettingsPart>((context, part) => 
-                part.CulturesField.Loader(() => domainCultureService.GetList()));
+            OnLoading<MainBitLocalizationSettingsPart>((context, part) =>
+                part.CulturesField.Loader(() => mainBitCultureRepository.GetList()));
         }
 
         public Localizer T { get; set; }

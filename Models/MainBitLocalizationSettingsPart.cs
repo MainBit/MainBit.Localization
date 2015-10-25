@@ -15,38 +15,29 @@ namespace MainBit.Localization.Models
             get { return _cultures.Value; }
             set { _cultures.Value = value; }
         }
+    }
 
+    public class MainBitLocalizationSettings
+    {
+        private readonly IEnumerable<MainBitCultureRecord> _cultures;
 
-        
+        public MainBitLocalizationSettings(IEnumerable<MainBitCultureRecord> cultures)
+        {
+            _cultures = cultures;
+        }
 
+        public IEnumerable<MainBitCultureRecord> Cultures
+        { 
+            get { return _cultures; }
+        }
+    }
 
-        //public int MainCultureId
-        //{
-        //    get { return this.Retrieve(p => p.MainCultureId); }
-        //    set { this.Store(p => p.MainCultureId, value); }
-        //}
-
-        //public int[] SiteCultureIds {
-        //    get { return DecodeSiteCultureIds(this.Retrieve<string>("SiteCultureIds")); }
-        //    set { this.Store("SiteCultureIds", EncodeSiteCultureIds(value)); }
-        //}
-
-
-        //private static readonly char[] separator = new [] {'{', '}', ','};
-        //private string EncodeSiteCultureIds(ICollection<int> ids) {
-        //    if (ids == null || !ids.Any()) {
-        //        return string.Empty;
-        //    }
-
-        //    // use {1},{2} format so it can be filtered with delimiters
-        //    return "{" + string.Join("},{", ids.ToArray()) + "}";
-        //}
-        //private int[] DecodeSiteCultureIds(string ids) {
-        //    if(String.IsNullOrWhiteSpace(ids)) {
-        //        return new int[0];
-        //    }
-
-        //    return ids.Split(separator, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-        //}
+    public static class MainBitLocalizationSettingsPartExtensions
+    {
+        public static MainBitLocalizationSettings ToSettings(this MainBitLocalizationSettingsPart settingsPart)
+        {
+            var settings = new MainBitLocalizationSettings(settingsPart.Cultures);
+            return settings;
+        }
     }
 }

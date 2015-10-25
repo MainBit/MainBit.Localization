@@ -16,21 +16,23 @@ using System.Net;
 using Orchard.UI.Notify;
 using Orchard.Logging;
 using System.Globalization;
+using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Controllers {
+
     [Admin]
+    [OrchardFeature("MainBit.Localization.MainSite")]
     public class CultureAdminController : Controller, IUpdateModel
     {
-
-        private readonly IMainBitCultureService _domainCultureService;
+        private readonly IMainBitCultureRepository _mainBitCultureRepository;
         private readonly INotifier _notifier;
 
         public CultureAdminController(IOrchardServices services,
-            IMainBitCultureService domainCultureService,
+            IMainBitCultureRepository mainBitCultureRepository,
             INotifier notifier)
         {
             Services = services;
-            _domainCultureService = domainCultureService;
+            _mainBitCultureRepository = mainBitCultureRepository;
             _notifier = notifier;
 
             T = NullLocalizer.Instance;
@@ -59,7 +61,7 @@ namespace MainBit.Localization.Controllers {
             {
                 var record = new MainBitCultureRecord();
                 UpdateRecord(viewModel, record);
-                _domainCultureService.Create(record);
+                _mainBitCultureRepository.Create(record);
             }
 
             return RedirectToAction("Index");
@@ -67,7 +69,7 @@ namespace MainBit.Localization.Controllers {
 
         public ActionResult Edit(int id)
         {
-            var record = _domainCultureService.Get(id);
+            var record = _mainBitCultureRepository.Get(id);
             var viewModel = CreateViewModel(record);
             return View(viewModel);
         }
@@ -75,11 +77,11 @@ namespace MainBit.Localization.Controllers {
         [HttpPost]
         public ActionResult Edit(int id, MainBitCultureViewModel viewModel)
         {
-            var record = _domainCultureService.Get(id);
+            var record = _mainBitCultureRepository.Get(id);
             if (Validate(viewModel, record))
             {
                 UpdateRecord(viewModel, record);
-                _domainCultureService.Update(record);
+                _mainBitCultureRepository.Update(record);
             }
 
             return RedirectToAction("Index");
@@ -97,7 +99,6 @@ namespace MainBit.Localization.Controllers {
             record.Position = viewModel.Position;
             record.DisplayName = viewModel.DisplayName;
             record.IsMain = viewModel.IsMain;
-            record.AppDomainSiteRecord_Id = viewModel.AppDomainSiteRecord_Id;
             
         }
         private MainBitCultureViewModel CreateViewModel(MainBitCultureRecord record)
@@ -117,7 +118,6 @@ namespace MainBit.Localization.Controllers {
                 viewModel.Position = record.Position;
                 viewModel.DisplayName = record.DisplayName;
                 viewModel.IsMain = record.IsMain;
-                viewModel.AppDomainSiteRecord_Id = record.AppDomainSiteRecord_Id;
             }
 
             return viewModel;

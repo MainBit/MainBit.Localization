@@ -9,7 +9,7 @@ using System.Web;
 
 namespace MainBit.Localization.Services
 {
-    public interface IMainBitCultureService : IDependency
+    public interface IMainBitCultureRepository : IDependency
     {
         List<MainBitCultureRecord> GetList();
         MainBitCultureRecord Get(int id);
@@ -17,12 +17,12 @@ namespace MainBit.Localization.Services
         void Update(MainBitCultureRecord domainCultureRecord);
     }
 
-    public class MainBitCultureService : IMainBitCultureService
+    public class MainBitCultureRepository : IMainBitCultureRepository
     {
         private readonly IRepository<MainBitCultureRecord> _repository;
         private readonly ISignals _signals;
 
-        public MainBitCultureService(IRepository<MainBitCultureRecord> repository,
+        public MainBitCultureRepository(IRepository<MainBitCultureRecord> repository,
             ISignals signals)
         {
             _repository = repository;

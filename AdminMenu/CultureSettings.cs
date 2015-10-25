@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace MainBit.Localization.AdminMenu
 {
-    [OrchardFeature("MainBit.Localization.MainSite")]
-    public class MainSite : INavigationProvider
+    [OrchardFeature("MainBit.Localization.CultureSettings")]
+    public class CultureSettings : INavigationProvider
     {
-        public MainSite(IModuleService moduleService)
+        public CultureSettings(IModuleService moduleService)
         {
             T = NullLocalizer.Instance;
         }

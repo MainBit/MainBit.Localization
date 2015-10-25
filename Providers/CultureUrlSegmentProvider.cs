@@ -19,35 +19,34 @@ namespace MainBit.Localization.Providers
     {
         private readonly IWorkContextAccessor _wca;
         private readonly ISignals _signals;
+        private readonly IMainBitLocalizationSettingsService _mainBitLocalizationSettingsService;
 
-        public CultureUrlSegmentProvider(IWorkContextAccessor wca, ISignals signals)
+        public CultureUrlSegmentProvider(IWorkContextAccessor wca, ISignals signals, IMainBitLocalizationSettingsService mainBitLocalizationSettingsService)
         {
             _wca = wca;
             _signals = signals;
+            _mainBitLocalizationSettingsService = mainBitLocalizationSettingsService;
         }
 
         public static string Name
         {
-            get { return "TwoLetterISOLanguageName"; }
+            get { return "culture"; }
         }
 
-        public void Describe(DescribeUrlSegmentsContext context)
+        public void Describe(DescribeUrlSegmentContext context)
         {
             var workContext = _wca.GetContext();
-            var settings = workContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
-
-            //var siteCulture = workContext.CurrentSite.As<SiteSettingsPart>().SiteCulture;
-            var defaultCulture = settings.Cultures.FirstOrDefault(c => c.Culture == workContext.CurrentSite.SiteCulture);
-            var otherCultures = settings.Cultures.Where(c => c != defaultCulture);
-
-            context.Element(
-                Name,
-                UrlSegmentValueDescriptorHelper.CreateList(
-                    otherCultures.Select(c => c.UrlSegment).ToArray(),
-                    otherCultures.Select(c => c.StoredPrefix).ToArray()
-                ),
-                defaultCulture != null ? defaultCulture.UrlSegment : "",
-                defaultCulture != null ? defaultCulture.StoredPrefix : "");
+            var describeFor = context.For(Name, Name);
+            foreach (var culture in _mainBitLocalizationSettingsService.GetSettings().Cultures)
+            {
+                describeFor.Value(
+                    culture.Culture,
+                    culture.DisplayName,
+                    culture.UrlSegment,
+                    culture.StoredPrefix,
+                    culture.IsMain
+                );
+            }
         }
 
         public void MonitorChanged(AcquireContext<string> acquire)

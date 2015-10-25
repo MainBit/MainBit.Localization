@@ -9,8 +9,11 @@ using MainBit.Localization.Models;
 using System.Linq;
 using MainBit.Localization.Services;
 using Orchard.Mvc.Html;
+using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Controllers {
+
+    [OrchardFeature("MainBit.Localization.MultiTenancy")]
     public class CultureController : Controller {
         private readonly IMainBitLocalizationService _mainbitLocalizationService;
         
@@ -24,8 +27,8 @@ namespace MainBit.Localization.Controllers {
         public IOrchardServices Services { get; set; }
         public Localizer T { get; set; }
 
-        public ActionResult MainItem(int id, string culture, string toCulture) {
-            var destUrl = _mainbitLocalizationService.GetDestUrl(id, culture, toCulture);
+        public ActionResult MainItem(int id, string from, string to) {
+            var destUrl = Services.WorkContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority); //_mainbitLocalizationService.GetDestUrl(id, from, to);
             return RedirectPermanent(destUrl);
 
         }

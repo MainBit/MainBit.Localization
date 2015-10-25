@@ -8,33 +8,33 @@ using Orchard.Environment.Extensions;
 using Orchard.Localization.Services;
 using MainBit.Localization.Models;
 using Orchard;
-using MainBit.Localization.Extensions;
 using MainBit.Localization.Services;
 using MainBit.Alias.Services;
 using MainBit.Localization.Providers;
+using Orchard.UI.Admin;
 
 namespace MainBit.Localization.Selectors
 {
     public class DomainCultureSelector : ICultureSelector {
         private readonly IOrchardServices _orchardServices;
-        private readonly IDomainCultureHelper _domainCultureHelper;
         private readonly IUrlService _urlService;
+        private readonly IMainBitLocalizationSettingsService _mainBitLocalizationSettingsService;
 
         public DomainCultureSelector(
             IOrchardServices orchardServices,
-            IDomainCultureHelper domainCultureHelper,
-            IUrlService urlService)
+            IUrlService urlService,
+            IMainBitLocalizationSettingsService mainBitLocalizationSettingsService)
         {
             _orchardServices = orchardServices;
-            _domainCultureHelper = domainCultureHelper;
             _urlService = urlService;
+            _mainBitLocalizationSettingsService = mainBitLocalizationSettingsService;
         }
 
         public CultureSelectorResult GetCulture(HttpContextBase context) {
-            if (context == null || ContextHelpers.IsRequestAdmin(context)) return null;
+            if (context == null || AdminFilter.IsApplied(context.Request.RequestContext)) return null;
 
-            var settings = _orchardServices.WorkContext.CurrentSite.As<MainBitLocalizationSettingsPart>();
-            var urlContext = _urlService.CurrentUrlContext();
+            var settings = _mainBitLocalizationSettingsService.GetSettings();
+            var urlContext = _urlService.GetCurrentContext();
             if (urlContext == null) { return null; }
             var culture = settings.Cultures.FirstOrDefault(c => c.UrlSegment == urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Value);
 

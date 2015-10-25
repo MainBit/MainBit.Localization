@@ -14,6 +14,5 @@ namespace MainBit.Localization.Models
         public virtual int Position { get; set; }
         public virtual string DisplayName { get; set; }
         public virtual bool IsMain { get; set; }
-        public virtual int AppDomainSiteRecord_Id { get; set; }
     }
 }

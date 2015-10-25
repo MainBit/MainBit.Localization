@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MainBit.Localization.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -12,7 +13,6 @@ namespace MainBit.Localization.ViewModels
         {
             Cultures = new List<CultureEntry>();
         }
-
         public CultureEntry CurrentCulture { get; set; } 
         public List<CultureEntry> Cultures { get; set; }
     }
@@ -22,5 +22,6 @@ namespace MainBit.Localization.ViewModels
         public string Url { get; set; }
         public string DisplayName { get; set; }
         public CultureInfo CultureInfo { get; set; }
+        public MainBitCultureRecord MainBitCulture { get; set; }
     }
 }

@@ -97,6 +97,11 @@
       <Name>MainBit.Alias</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\MainBit.MultiTenancy\MainBit.MultiTenancy.csproj">
+      <Project>{6474a3bf-4c9e-4572-b912-fa6f1bb051d9}</Project>
+      <Name>MainBit.MultiTenancy</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\MainBit.Utility\MainBit.Utility.csproj">
       <Project>{34cb6685-15d4-4ef8-8791-2e1efac64339}</Project>
       <Name>MainBit.Utility</Name>
@@ -129,33 +134,37 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminMenu\DependentSite.cs" />
-    <Compile Include="AdminMenu\MainSite.cs" />
+    <Compile Include="AdminMenu\CultureSettings.cs" />
     <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\CultureAdminController.cs" />
     <Compile Include="Drivers\CulturePickerPartDriver.cs" />
+    <Compile Include="Drivers\TenantLocalizationPartDriver.cs" />
     <Compile Include="Drivers\DomainLocalizationPartDriver.cs" />
-    <Compile Include="Extensions\ContentItemExtensions.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="Handlers\TenantLocalizationPartHandler.cs" />
     <Compile Include="Handlers\MainBitLocalizationPartHandler.cs" />
     <Compile Include="Handlers\MainBitLocalizationSettingsPartHandler.cs" />
-    <Compile Include="Helpers\ContextHelpers.cs" />
     <Compile Include="Helpers\UrlBuilder.cs" />
-    <Compile Include="Migrations.cs" />
-    <Compile Include="Models\AppDomainSiteRecord.cs" />
+    <Compile Include="Migrations\DependentSite.cs" />
+    <Compile Include="Migrations\CultureSettings.cs" />
+    <Compile Include="Migrations\General.cs" />
     <Compile Include="Models\MainBitCultureRecord.cs" />
     <Compile Include="Models\MainBitLocalizationItemRecord.cs" />
     <Compile Include="Models\MainBitLocalizationSettingsPart.cs" />
     <Compile Include="Models\CulturePickerPart.cs" />
     <Compile Include="Models\MainBitLocalizationPart.cs" />
     <Compile Include="Models\MainBitLocalizationPartRecord.cs" />
+    <Compile Include="Models\TenantLocalizationPart.cs" />
+    <Compile Include="Models\TenantLocalizationPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Selectors\DomainCultureSelector.cs" />
     <Compile Include="Providers\CultureUrlSegmentProvider.cs" />
-    <Compile Include="Services\IDomainCultureHelper.cs" />
-    <Compile Include="Services\IMainBitCultureService.cs" />
+    <Compile Include="Services\IMainBitCultureRepository.cs" />
+    <Compile Include="Services\IMainBitLocalizedItemProvider.cs" />
     <Compile Include="Services\IMainBitLocalizationService.cs" />
-    <Compile Include="MigrationsMainSite.cs" />
+    <Compile Include="Migrations\MainSite.cs" />
+    <Compile Include="Services\IMainBitLocalizationSettingsProvider.cs" />
+    <Compile Include="Services\IMainBitLocalizationSettingsService.cs" />
     <Compile Include="Tokens.cs" />
     <Compile Include="ViewModels\CulturePickerViewModel.cs" />
     <Compile Include="ViewModels\MainBitCultureViewModel.cs" />
@@ -181,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Localization\ru-RU\orchard.module.po" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\TenantLocalizationPart.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

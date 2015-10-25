@@ -13,7 +13,6 @@ using MainBit.Localization.Services;
 using Orchard.UI.Admin;
 using Orchard.Localization.Services;
 using MainBit.Localization.Helpers;
-using MainBit.Localization.Extensions;
 using MainBit.Alias.Services;
 using MainBit.Alias;
 using System.Globalization;
@@ -27,22 +26,22 @@ namespace MainBit.Localization
         private readonly ICurrentContentAccessor _currentContentAccessor;
         private readonly IMainBitLocalizationService _mainBitLocalizationService;
         private readonly ILocalizationService _localizationService;
-        private readonly IDomainCultureHelper _domainCultureHelper;
         private readonly IUrlService _urlService;
+        private readonly IMainBitLocalizationSettingsService _mainBitLocalizationSettingsService;
 
         public Filter(IWorkContextAccessor wca,
             ICurrentContentAccessor currentContentAccessor,
             IMainBitLocalizationService mainBitLocalizationService,
             ILocalizationService localizationService,
-            IDomainCultureHelper domainCultureHelper,
-            IUrlService urlService)
+            IUrlService urlService,
+            IMainBitLocalizationSettingsService mainBitLocalizationSettingsService)
         {
             _wca = wca;
             _currentContentAccessor = currentContentAccessor;
             _mainBitLocalizationService = mainBitLocalizationService;
             _localizationService = localizationService;
-            _domainCultureHelper = domainCultureHelper;
             _urlService = urlService;
+            _mainBitLocalizationSettingsService = mainBitLocalizationSettingsService;
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
@@ -57,11 +56,12 @@ namespace MainBit.Localization
             var content = _currentContentAccessor.CurrentContentItem;
             if (content == null) { return; }
 
-            var urlContext = _urlService.CurrentUrlContext();
+            var urlContext = _urlService.GetCurrentContext();
             if (urlContext == null) { return; }
 
             var contentCulture = _localizationService.GetContentCulture(content);
-            var contentMainBitCulture = _mainBitLocalizationService.GetCulture(contentCulture);
+            var settings = _mainBitLocalizationSettingsService.GetSettings();
+            var contentMainBitCulture = settings.Cultures.FirstOrDefault(c => c.Culture == contentCulture);
             if (contentMainBitCulture == null) { return; }
 
             if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Value != contentMainBitCulture.UrlSegment)
@@ -69,7 +69,8 @@ namespace MainBit.Localization
                 var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string> {
                     { CultureUrlSegmentProvider.Name, contentMainBitCulture.UrlSegment }});
 
-                filterContext.Result = new RedirectResult(newUrlContext.GetFullDisplayUrl());
+                if (newUrlContext != null)
+                    filterContext.Result = new RedirectResult(newUrlContext.GetFullDisplayUrl());
             }
         }
     }

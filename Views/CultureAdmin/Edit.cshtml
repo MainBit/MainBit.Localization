@@ -36,11 +36,6 @@
         <span class="hint">@T("")</span>
     </fieldset>
     <fieldset>
-        @Html.LabelFor(m => m.AppDomainSiteRecord_Id)
-        @Html.EditorFor(m => m.AppDomainSiteRecord_Id)
-        <span class="hint">@T("")</span>
-    </fieldset>
-    <fieldset>
         <button class="primaryAction" type="submit">@T("Save")</button>
         @Html.ActionLink(T("Cancel").ToString(), "Index", null, new { @class = "button" })
     </fieldset>
