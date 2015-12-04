@@ -24,6 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -157,14 +158,18 @@
     <Compile Include="Models\TenantLocalizationPart.cs" />
     <Compile Include="Models\TenantLocalizationPartRecord.cs" />
     <Compile Include="Routes.cs" />
-    <Compile Include="Selectors\DomainCultureSelector.cs" />
+    <Compile Include="Selectors\AliasCultureSelector.cs" />
     <Compile Include="Providers\CultureUrlSegmentProvider.cs" />
+    <Compile Include="Services\DefaultMainBitLocalizedItemProvider.cs" />
     <Compile Include="Services\IMainBitCultureRepository.cs" />
     <Compile Include="Services\IMainBitLocalizedItemProvider.cs" />
     <Compile Include="Services\IMainBitLocalizationService.cs" />
     <Compile Include="Migrations\MainSite.cs" />
     <Compile Include="Services\IMainBitLocalizationSettingsProvider.cs" />
     <Compile Include="Services\IMainBitLocalizationSettingsService.cs" />
+    <Compile Include="Services\MainSiteMainBitLocalizationSettingsProvider.cs" />
+    <Compile Include="Services\TenantMainBitLocalizationSettingsProvider.cs" />
+    <Compile Include="Services\TenantMainBitLocalizedItemProvider.cs" />
     <Compile Include="Tokens.cs" />
     <Compile Include="ViewModels\CulturePickerViewModel.cs" />
     <Compile Include="ViewModels\MainBitCultureViewModel.cs" />

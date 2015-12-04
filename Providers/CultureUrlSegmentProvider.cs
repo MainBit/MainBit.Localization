@@ -35,13 +35,16 @@ namespace MainBit.Localization.Providers
 
         public void Describe(DescribeUrlSegmentContext context)
         {
-            var workContext = _wca.GetContext();
-            var describeFor = context.For(Name, Name);
-            foreach (var culture in _mainBitLocalizationSettingsService.GetSettings().Cultures)
+            var settings = _mainBitLocalizationSettingsService.GetSettings();
+            if (!settings.Cultures.Any()) return;
+
+            var describeFor = context.For(Name, Name, 0);
+            foreach (var culture in settings.Cultures)
             {
                 describeFor.Value(
                     culture.Culture,
                     culture.DisplayName,
+                    culture.Position,
                     culture.UrlSegment,
                     culture.StoredPrefix,
                     culture.IsMain

@@ -28,13 +28,15 @@ namespace MainBit.Localization
         private readonly ILocalizationService _localizationService;
         private readonly IUrlService _urlService;
         private readonly IMainBitLocalizationSettingsService _mainBitLocalizationSettingsService;
+        private readonly IUrlTemplateManager _urlTemplateManager;
 
         public Filter(IWorkContextAccessor wca,
             ICurrentContentAccessor currentContentAccessor,
             IMainBitLocalizationService mainBitLocalizationService,
             ILocalizationService localizationService,
             IUrlService urlService,
-            IMainBitLocalizationSettingsService mainBitLocalizationSettingsService)
+            IMainBitLocalizationSettingsService mainBitLocalizationSettingsService,
+            IUrlTemplateManager urlTemplateManager)
         {
             _wca = wca;
             _currentContentAccessor = currentContentAccessor;
@@ -42,6 +44,7 @@ namespace MainBit.Localization
             _localizationService = localizationService;
             _urlService = urlService;
             _mainBitLocalizationSettingsService = mainBitLocalizationSettingsService;
+            _urlTemplateManager = urlTemplateManager;
         }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
@@ -59,15 +62,17 @@ namespace MainBit.Localization
             var urlContext = _urlService.GetCurrentContext();
             if (urlContext == null) { return; }
 
-            var contentCulture = _localizationService.GetContentCulture(content);
-            var settings = _mainBitLocalizationSettingsService.GetSettings();
-            var contentMainBitCulture = settings.Cultures.FirstOrDefault(c => c.Culture == contentCulture);
-            if (contentMainBitCulture == null) { return; }
+            var cultureSegment = _urlTemplateManager.DescribeUrlSegments().FirstOrDefault(s => s.Name == CultureUrlSegmentProvider.Name);
+            if (cultureSegment == null) { return; }
 
-            if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Value != contentMainBitCulture.UrlSegment)
+            var contentCulture = _localizationService.GetContentCulture(content);
+            var segmentValueShouldBe = cultureSegment.Values.FirstOrDefault(v => v.Name == contentCulture);
+            if (segmentValueShouldBe == null) { return; }
+
+            if (urlContext.Descriptor.Segments[CultureUrlSegmentProvider.Name].Name != segmentValueShouldBe.Name)
             {
                 var newUrlContext = _urlService.ChangeSegmentValues(urlContext, new Dictionary<string, string> {
-                    { CultureUrlSegmentProvider.Name, contentMainBitCulture.UrlSegment }});
+                    { CultureUrlSegmentProvider.Name, segmentValueShouldBe.Value }});
 
                 if (newUrlContext != null)
                     filterContext.Result = new RedirectResult(newUrlContext.GetFullDisplayUrl());
