@@ -142,6 +142,7 @@
     <Compile Include="Drivers\TenantLocalizationPartDriver.cs" />
     <Compile Include="Drivers\DomainLocalizationPartDriver.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="Handlers\LocalizationShapes.cs" />
     <Compile Include="Handlers\TenantLocalizationPartHandler.cs" />
     <Compile Include="Handlers\MainBitLocalizationPartHandler.cs" />
     <Compile Include="Handlers\MainBitLocalizationSettingsPartHandler.cs" />
