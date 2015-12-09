@@ -1,22 +1,16 @@
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using MainBit.Localization.Models;
 using MainBit.Localization.Services;
 using Orchard;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Localization.Services;
-using Orchard.ContentManagement;
 using MainBit.Localization.ViewModels;
 using System.Linq;
 using MainBit.Utility.Services;
-using Orchard.Localization.Models;
 using MainBit.Alias.Services;
-using Orchard.Mvc;
 using System.Globalization;
 
 namespace MainBit.Localization.Drivers
 {
-    [UsedImplicitly]
     public class CulturePickerPartDriver : ContentPartDriver<CulturePickerPart> {
         private readonly IOrchardServices _orchardServices;
         private readonly IMainBitLocalizationService _mainbitLocalizationService;
