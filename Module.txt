@@ -9,23 +9,8 @@ Features:
     MainBit.Localization:
         Category: Localization
 		Description: Description for feature MainBit.Localization
-		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens
-	MainBit.Localization.MainSite:
+		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens, Orchard.Workflows
+	MainBit.Localization.Tenant:
 		Category: Localization
-		Description: Must be enabled only for main site. Allow editing domain culture settings.
-		Dependencies: MainBit.Localization, MainBit.Localization.CultureSettings
-	MainBit.Localization.MultiTenancy:
-		Category: Localization
-		Description: ""
-		Dependencies: MainBit.Localization, MainBit.MultiTenancy
-	MainBit.Localization.Default:
-		Category: Localization
-		Description: ""
-		Dependencies: MainBit.Localization, Orchard.Localization
-	MainBit.Localization.DependentSite:
-		Category: Localization
-		Description: Must be enabled only for dependent (non-main) site. Allow getting domain culture settings from main site.
-		Dependencies: MainBit.Localization.MultiTenancy
-	MainBit.Localization.CultureSettings:
-		Category: Localization
+		Description: Must be enabled only for tenant (non-default).
 		Dependencies: MainBit.Localization

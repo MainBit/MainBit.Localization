@@ -5,7 +5,7 @@ using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Drivers
 {
-    [OrchardFeature("MainBit.Localization.DependentSite")]
+    [OrchardFeature("MainBit.Localization.Tenant")]
     public class TenantLocalizationPartDriver : ContentPartDriver<TenantLocalizationPart>
     {
         /// <summary>

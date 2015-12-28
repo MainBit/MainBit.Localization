@@ -6,8 +6,8 @@ using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Migrations
 {
-    [OrchardFeature("MainBit.Localization.DependentSite")]
-    public class DependentSite : DataMigrationImpl
+    [OrchardFeature("MainBit.Localization.Tenant")]
+    public class Tenant : DataMigrationImpl
     {
         public int Create()
         {

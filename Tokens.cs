@@ -1,12 +1,7 @@
 ﻿using Orchard;
-using Orchard.Events;
 using Orchard.Localization;
 using Orchard.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Web;
 
 namespace MainBit.Localization
 {

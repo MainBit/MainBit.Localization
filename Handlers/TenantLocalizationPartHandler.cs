@@ -4,7 +4,7 @@ using MainBit.Localization.Models;
 using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Handlers {
-    [OrchardFeature("MainBit.Localization.DependentSite")]
+    [OrchardFeature("MainBit.Localization.Tenant")]
     public class TenantLocalizationPartHandler : ContentHandler {
 
         public TenantLocalizationPartHandler(IRepository<TenantLocalizationPartRecord> repository)

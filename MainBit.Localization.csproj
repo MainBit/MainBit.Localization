@@ -133,66 +133,29 @@
       <Name>Orchard.Tokens</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.Workflows\Orchard.Workflows.csproj">
+      <Project>{7059493c-8251-4764-9c1e-2368b8b485bc}</Project>
+      <Name>Orchard.Workflows</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdminMenu\CultureSettings.cs" />
-    <Compile Include="Controllers\CultureController.cs" />
-    <Compile Include="Controllers\CultureAdminController.cs" />
-    <Compile Include="Drivers\CulturePickerPartDriver.cs" />
     <Compile Include="Drivers\TenantLocalizationPartDriver.cs" />
-    <Compile Include="Drivers\DomainLocalizationPartDriver.cs" />
+    <Compile Include="Events\CultureUrlContextEventHandler.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Handlers\LocalizationShapes.cs" />
     <Compile Include="Handlers\TenantLocalizationPartHandler.cs" />
-    <Compile Include="Handlers\MainBitLocalizationPartHandler.cs" />
-    <Compile Include="Handlers\MainBitLocalizationSettingsPartHandler.cs" />
     <Compile Include="Helpers\UrlBuilder.cs" />
-    <Compile Include="Migrations\DependentSite.cs" />
-    <Compile Include="Migrations\CultureSettings.cs" />
-    <Compile Include="Migrations\General.cs" />
-    <Compile Include="Models\MainBitCultureRecord.cs" />
-    <Compile Include="Models\MainBitLocalizationItemRecord.cs" />
-    <Compile Include="Models\MainBitLocalizationSettingsPart.cs" />
-    <Compile Include="Models\CulturePickerPart.cs" />
-    <Compile Include="Models\MainBitLocalizationPart.cs" />
-    <Compile Include="Models\MainBitLocalizationPartRecord.cs" />
+    <Compile Include="Migrations\Tenant.cs" />
+    <Compile Include="Models\MainBitLocalizationSettings.cs" />
     <Compile Include="Models\TenantLocalizationPart.cs" />
     <Compile Include="Models\TenantLocalizationPartRecord.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Selectors\AliasCultureSelector.cs" />
-    <Compile Include="Providers\CultureUrlSegmentProvider.cs" />
-    <Compile Include="Services\DefaultMainBitLocalizedItemProvider.cs" />
-    <Compile Include="Services\IMainBitCultureRepository.cs" />
-    <Compile Include="Services\IMainBitLocalizedItemProvider.cs" />
-    <Compile Include="Services\IMainBitLocalizationService.cs" />
-    <Compile Include="Migrations\MainSite.cs" />
-    <Compile Include="Services\IMainBitLocalizationSettingsProvider.cs" />
-    <Compile Include="Services\IMainBitLocalizationSettingsService.cs" />
-    <Compile Include="Services\MainSiteMainBitLocalizationSettingsProvider.cs" />
-    <Compile Include="Services\TenantMainBitLocalizationSettingsProvider.cs" />
-    <Compile Include="Services\TenantMainBitLocalizedItemProvider.cs" />
     <Compile Include="Tokens.cs" />
-    <Compile Include="ViewModels\CulturePickerViewModel.cs" />
-    <Compile Include="ViewModels\MainBitCultureViewModel.cs" />
-    <Compile Include="ViewModels\GetSettingsViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CultureAdmin\Index.cshtml" />
+    <Compile Include="Workflows\Activities\CultureActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Placement.info" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CultureAdmin\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\CultureAdmin\Add.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts\DomainLocalizationPart.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts\CulturePicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Localization\ru-RU\orchard.module.po" />
