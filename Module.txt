@@ -1,9 +1,9 @@
 ﻿Name: MainBit.Localization
 AntiForgery: enabled
-Author: neTp9c
+Author: The MainBit Team
 Website: http://mainbit.com
-Version: 1.9
-OrchardVersion: 1.9
+Version: 1.10
+OrchardVersion: 1.10
 Description: Description for the module
 Features:
     MainBit.Localization:
