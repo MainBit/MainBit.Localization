@@ -10,7 +10,3 @@ Features:
         Category: Localization
 		Description: Description for feature MainBit.Localization
 		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens, Orchard.Workflows
-	MainBit.Localization.Tenant:
-		Category: Localization
-		Description: Must be enabled only for tenant (non-default).
-		Dependencies: MainBit.Localization

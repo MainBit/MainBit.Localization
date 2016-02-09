@@ -7,12 +7,12 @@ using Orchard.Mvc.Html;
 
 namespace MainBit.Localization.Events
 {
-    public class TenantUrlContextEventHandler : IUrlContextEventHandler
+    public class CultureUrlContextEventHandler : IUrlContextEventHandler
     {
         private readonly ILocalizationService _localizationService;
         private readonly UrlHelper _urlHelper;
 
-        public TenantUrlContextEventHandler(ILocalizationService localizationService,
+        public CultureUrlContextEventHandler(ILocalizationService localizationService,
             UrlHelper urlHelper)
         {
             _localizationService = localizationService;
