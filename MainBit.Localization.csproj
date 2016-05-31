@@ -118,17 +118,10 @@
     <ProjectReference Include="..\MainBit.Alias\MainBit.Alias.csproj">
       <Project>{27833a1d-5b73-4268-9eb8-b25ee4f15eef}</Project>
       <Name>MainBit.Alias</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\MainBit.MultiTenancy\MainBit.MultiTenancy.csproj">
-      <Project>{6474a3bf-4c9e-4572-b912-fa6f1bb051d9}</Project>
-      <Name>MainBit.MultiTenancy</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\MainBit.Utility\MainBit.Utility.csproj">
       <Project>{34cb6685-15d4-4ef8-8791-2e1efac64339}</Project>
       <Name>MainBit.Utility</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Orchard.Alias\Orchard.Alias.csproj">
       <Project>{475b6c45-b27c-438b-8966-908b9d6d1077}</Project>

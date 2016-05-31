@@ -28,10 +28,18 @@ namespace MainBit.Localization.Events
                 if (segment.UrlSegmentDescriptor.Name == "culture")
                 {
                     var localizationPart = context.Content.As<LocalizationPart>();
-                    if (localizationPart == null) return;
+                    if (localizationPart == null)
+                    {
+                        context.NewDisplayVirtualPath = "/";
+                        return;
+                    }
 
                     var toLocalizationPart = _localizationService.GetLocalizedContentItem(context.Content, segment.NewValue.Name);
-                    if (toLocalizationPart == null) return;
+                    if (toLocalizationPart == null)
+                    {
+                        context.NewDisplayVirtualPath = "/";
+                        return;
+                    }
 
                     context.NewDisplayVirtualPath = _urlHelper.ItemDisplayUrl(toLocalizationPart).Substring(1);
                 }
