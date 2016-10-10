@@ -4,9 +4,11 @@ using Orchard.Localization.Models;
 using Orchard.Localization.Services;
 using System.Web.Mvc;
 using Orchard.Mvc.Html;
+using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Events
 {
+    [OrchardFeature("MainBit.Localization.Alias")]
     public class CultureUrlContextEventHandler : IUrlContextEventHandler
     {
         private readonly ILocalizationService _localizationService;
