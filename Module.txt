@@ -6,7 +6,11 @@ Version: 1.10
 OrchardVersion: 1.10
 Description: Description for the module
 Features:
-    MainBit.Localization:
+	MainBit.Localization:
+		Category: Localization
+		Description: Culture activity (ex. for translate emails). Setting current site culture as default on content creating. CurrentCulture token.
+		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens, Orchard.Workflows
+    MainBit.Localization.Alias:
         Category: Localization
-		Description: Description for feature MainBit.Localization
+		Description: Handle localization segment for MainBit.Alias
 		Dependencies: MainBit.Utility, MainBit.Alias, Orchard.Localization, Orchard.Tokens, Orchard.Workflows

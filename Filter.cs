@@ -7,9 +7,11 @@ using MainBit.Utility.Services;
 using Orchard.UI.Admin;
 using Orchard.Localization.Services;
 using MainBit.Alias.Services;
+using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization
 {
+    [OrchardFeature("MainBit.Localization.Alias")]
     public class Filter : FilterProvider, IActionFilter
     {
         private readonly IWorkContextAccessor _wca;

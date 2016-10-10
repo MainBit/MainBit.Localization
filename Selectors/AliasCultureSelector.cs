@@ -5,9 +5,11 @@ using Orchard;
 using MainBit.Alias.Services;
 using Orchard.UI.Admin;
 using MainBit.Alias.Descriptors;
+using Orchard.Environment.Extensions;
 
 namespace MainBit.Localization.Selectors
 {
+    [OrchardFeature("MainBit.Localization.Alias")]
     public class AliasCultureSelector : ICultureSelector {
         private readonly IOrchardServices _orchardServices;
         private readonly IUrlService _urlService;
