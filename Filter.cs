@@ -8,6 +8,7 @@ using Orchard.UI.Admin;
 using Orchard.Localization.Services;
 using MainBit.Alias.Services;
 using Orchard.Environment.Extensions;
+using Orchard.Logging;
 
 namespace MainBit.Localization
 {
@@ -31,7 +32,11 @@ namespace MainBit.Localization
             _localizationService = localizationService;
             _urlService = urlService;
             _urlTemplateManager = urlTemplateManager;
+
+            Logger = NullLogger.Instance;
         }
+
+        public ILogger Logger { get; set; }
 
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
