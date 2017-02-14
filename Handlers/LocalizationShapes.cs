@@ -15,10 +15,20 @@ namespace MainBit.Layouts.Handlers
         public void Discover(ShapeTableBuilder builder) {
 
             builder.Describe("EditorTemplate").OnDisplaying(context => {
-                if (context.ShapeMetadata.Type == "Parts_Localization_ContentTranslations_Edit")
+                
+                // shape type is EditorTemplate
+                //if (context.ShapeMetadata.Type != "Parts_Localization_ContentTranslations_Edit")
+                //{
+                //    return;
+                //}
+
+                if (context.Shape.TemplateName != "Parts/Localization.ContentTranslations.Edit")
+                {
                     return;
+                }
 
                 var model = context.Shape.Model as EditLocalizationViewModel;
+
                 var siteCulture = _wca.GetContext().CurrentSite.SiteCulture;
                 model.MissingCultures = model.MissingCultures.OrderByDescending(c => c == siteCulture).ToList();
             });
